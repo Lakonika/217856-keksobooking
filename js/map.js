@@ -76,6 +76,19 @@ var getRandomCollection = function (count, source) {
   return result;
 };
 
+var shuffle = function (array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  return array;
+};
+
+var features = shuffle(OFFER_DETAILS.FEATURES);
+var featuresOfferArr = features.splice(0, getRandomNumber(1, OFFER_DETAILS.FEATURES.length));
+
 var makeRandomOffers = function () {
   var result = [];
 
@@ -97,7 +110,7 @@ var makeRandomOffers = function () {
     newOffer.offer.checkout = OFFER_DETAILS.CHECKOUT_TIME[getRandomNumber(0, 2)];
     newOffer.offer.description = '';
     newOffer.offer.photos = getRandomCollection(getRandomNumber(1, OFFER_DETAILS.PHOTOS.length), OFFER_DETAILS.PHOTOS);
-    newOffer.offer.features = getRandomCollection(getRandomNumber(1, OFFER_DETAILS.FEATURES.length), OFFER_DETAILS.FEATURES);
+    newOffer.offer.features = featuresOfferArr;
 
     result.push(newOffer);
   }
@@ -122,8 +135,7 @@ var createPins = function (offersArr) {
 
 var getFeaturesFragment = function () {
   var featuresFragment = document.createDocumentFragment();
-  featuresFragment.innerHTML = '';
-  OFFER_DETAILS.FEATURES.forEach(function (item) {
+  featuresOfferArr.forEach(function (item) {
     var li = document.createElement('li');
     li.className = 'feature__image feature__image--' + item;
     featuresFragment.appendChild(li);
