@@ -60,10 +60,6 @@ var template = document.querySelector('template').content;
 var map = document.querySelector('.map');
 var mapPins = map.querySelector('.map__pins');
 
-var getAvatarPath = function (avatarNumber) {
-  return AVATAR_PATH + avatarNumber + AVATAR_EXT;
-};
-
 var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 };
@@ -84,6 +80,10 @@ var shuffle = function (array) {
     array[j] = temp;
   }
   return array;
+};
+
+var getAvatarPath = function (avatarNumber) {
+  return AVATAR_PATH + avatarNumber + AVATAR_EXT;
 };
 
 var features = shuffle(OFFER_DETAILS.FEATURES);
