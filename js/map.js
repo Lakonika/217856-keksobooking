@@ -23,9 +23,10 @@ var OFFER_DETAILS = {
   ],
 
   houseTypesTranslation: {
-    'flat': 'Квартира',
-    'house': 'Дом',
-    'bungalo': 'Бунгало'
+    flat: 'Квартира',
+    house: 'Дом',
+    bungalo: 'Бунгало',
+    palace: 'Дворец'
   },
 
   CHECKIN_TIME: [
@@ -56,14 +57,62 @@ var OFFER_DETAILS = {
   ]
 };
 
+var photoSize = {
+  WIDTH: 45,
+  HEIGHT: 40
+};
+
+var pinSize = {
+  WIDTH: 50,
+  HEIGHT: 70
+};
+
+var mainPinSize = {
+  on: {
+    WIDTH: 65,
+    HEIGHT: 77
+  },
+  off: {
+    WIDTH: 65,
+    HEIGHT: 65
+  }
+};
+
+var locationParams = {
+  X: {
+    MIN: 300,
+    MAX: 900
+  },
+  Y: {
+    MIN: 130,
+    MAX: 630
+  }
+};
+
+var ESC_KEYCODE = 27;
 var template = document.querySelector('template').content;
 var map = document.querySelector('.map');
 var mapPins = map.querySelector('.map__pins');
+var mainPin = map.querySelector('.map__pin--main');
+var adForm = document.querySelector('.ad-form');
+var inputAddress = document.querySelector('#address');
 
+var activateForm = function () {
+  adForm.classList.remove('ad-form--disabled');
+};
+
+var activateMap = function () {
+  map.classList.remove('map--faded');
+  var allPins = makeRandomOffers();
+  createPins(allPins);
+};
+
+// Генерация случайного числа
 var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 };
 
+// Генерация
 var getRandomCollection = function (count, source) {
   var result = [];
   for (var i = 0; i < count; i++) {
@@ -72,6 +121,7 @@ var getRandomCollection = function (count, source) {
   return result;
 };
 
+// расположение элементов массива в случайном порядке
 var shuffle = function (array) {
   for (var i = array.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1));
@@ -82,13 +132,14 @@ var shuffle = function (array) {
   return array;
 };
 
+// получение пути к файлу аватара
 var getAvatarPath = function (avatarNumber) {
   return AVATAR_PATH + avatarNumber + AVATAR_EXT;
 };
 
-var features = shuffle(OFFER_DETAILS.FEATURES);
-var featuresOfferArr = features.splice(0, getRandomNumber(1, OFFER_DETAILS.FEATURES.length));
+var features = getRandomCollection(OFFER_DETAILS.FEATURES);
 
+// генерация случайного объявления
 var makeRandomOffers = function () {
   var result = [];
 
@@ -110,7 +161,7 @@ var makeRandomOffers = function () {
     newOffer.offer.checkout = OFFER_DETAILS.CHECKOUT_TIME[getRandomNumber(0, 2)];
     newOffer.offer.description = '';
     newOffer.offer.photos = getRandomCollection(getRandomNumber(1, OFFER_DETAILS.PHOTOS.length), OFFER_DETAILS.PHOTOS);
-    newOffer.offer.features = featuresOfferArr;
+    newOffer.offer.features = features;
 
     result.push(newOffer);
   }
@@ -118,24 +169,10 @@ var makeRandomOffers = function () {
   return result;
 };
 
-var createPins = function (offersArr) {
-
-  var pinsMap = document.createDocumentFragment();
-
-  for (var i = 0; i < offersArr.length - 1; i++) {
-    var newPinNode = template.querySelector('.map__pin').cloneNode(true);
-    newPinNode.querySelector('img').src = offersArr[i].author.avatar;
-    newPinNode.style.top = offersArr[i].location.y + 'px';
-    newPinNode.style.left = offersArr[i].location.x + 'px';
-
-    pinsMap.appendChild(newPinNode);
-  }
-  mapPins.appendChild(pinsMap);
-};
-
+// создание элемента дополнительных опций
 var getFeaturesFragment = function () {
   var featuresFragment = document.createDocumentFragment();
-  featuresOfferArr.forEach(function (item) {
+  features.forEach(function (item) {
     var li = document.createElement('li');
     li.className = 'feature__image feature__image--' + item;
     featuresFragment.appendChild(li);
@@ -143,6 +180,7 @@ var getFeaturesFragment = function () {
   return featuresFragment;
 };
 
+// создание карточки объявления на карте
 var renderCard = function (offerObject) {
   var newOfferCard = template.querySelector('.map__card');
   newOfferCard.querySelector('.popup__avatar').src = offerObject.author.avatar;
@@ -164,8 +202,8 @@ var renderCard = function (offerObject) {
     var newPhotoImg = document.createElement('img');
     newPhotoImg.src = offerObject.offer.photos[i];
     newPhotoImg.className = 'popup__photo';
-    newPhotoImg.width = 45;
-    newPhotoImg.height = 40;
+    newPhotoImg.width = photoSize.WIDTH;
+    newPhotoImg.height = photoSize.HEIGHT;
     newPhotoImg.alt = 'Фотография жилья';
 
     popupPhotosElement.appendChild(newPhotoImg);
@@ -174,8 +212,51 @@ var renderCard = function (offerObject) {
   map.appendChild(newOfferCard);
 };
 
-map.classList.remove('map--faded');
+// создание DOM элементов для метки на карте
+var createPins = function (offersArr) {
 
-var allPins = makeRandomOffers();
-createPins(allPins);
-renderCard(allPins[0]);
+  var pinsMap = document.createDocumentFragment();
+  for (var i = 0; i < offersArr.length - 1; i++) {
+    var newPinNode = template.querySelector('.map__pin').cloneNode(true);
+    newPinNode.querySelector('img').src = offersArr[i].author.avatar;
+    newPinNode.style.top = (offersArr[i].location.y - pinSize.WIDTH / 2) + 'px';
+    newPinNode.style.left = (offersArr[i].location.x - pinSize.HEIGHT / 2) + 'px';
+
+    pinsMap.appendChild(newPinNode);
+    var activatePin = function () {
+      newPinNode.classList.add('map__pin--active');
+    };
+    var deactivatePin = function () {
+      newPinNode.classList.remove('map__pin--active');
+    };
+  }
+  newPinNode.addEventListener('click', function (evt) {
+    deactivatePin();
+    activatePin(evt.currentTarget);
+  });
+  mapPins.appendChild(pinsMap);
+};
+
+// Получение адреса метки mainPin на карте
+var getMainPinAddress = function () {
+  var addressX = Math.round(mainPin.offsetLeft + mainPinSize.on.WIDTH / 2);
+  var addressY = Math.round(mainPin.offsetTop + mainPinSize.on.HEIGHT / 2);
+  var coord = {
+    x: addressX,
+    y: addressY
+  };
+  return coord;
+};
+
+var setAddress = function (address) {
+  inputAddress.value = address.x + ', ' + address.y;
+};
+
+var movePin = function () {
+  activateForm();
+  activateMap();
+  setAddress(getMainPinAddress());
+  mainPin.removeEventListener('mouseup', movePin);
+};
+
+mainPin.addEventListener('mouseup', movePin);
