@@ -78,18 +78,6 @@ var mainPinSize = {
   }
 };
 
-var locationParams = {
-  X: {
-    MIN: 300,
-    MAX: 900
-  },
-  Y: {
-    MIN: 130,
-    MAX: 630
-  }
-};
-
-var ESC_KEYCODE = 27;
 var template = document.querySelector('template').content;
 var map = document.querySelector('.map');
 var mapPins = map.querySelector('.map__pins');
@@ -121,23 +109,11 @@ var getRandomCollection = function (count, source) {
   return result;
 };
 
-// расположение элементов массива в случайном порядке
-var shuffle = function (array) {
-  for (var i = array.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  }
-  return array;
-};
-
 // получение пути к файлу аватара
 var getAvatarPath = function (avatarNumber) {
   return AVATAR_PATH + avatarNumber + AVATAR_EXT;
 };
 
-var features = getRandomCollection(OFFER_DETAILS.FEATURES);
 
 // генерация случайного объявления
 var makeRandomOffers = function () {
@@ -161,7 +137,7 @@ var makeRandomOffers = function () {
     newOffer.offer.checkout = OFFER_DETAILS.CHECKOUT_TIME[getRandomNumber(0, 2)];
     newOffer.offer.description = '';
     newOffer.offer.photos = getRandomCollection(getRandomNumber(1, OFFER_DETAILS.PHOTOS.length), OFFER_DETAILS.PHOTOS);
-    newOffer.offer.features = features;
+    newOffer.offer.features = getRandomCollection((1, OFFER_DETAILS.FEATURES.length), OFFER_DETAILS.FEATURES);
 
     result.push(newOffer);
   }
@@ -170,19 +146,35 @@ var makeRandomOffers = function () {
 };
 
 // создание элемента дополнительных опций
-var getFeaturesFragment = function () {
+var getFeaturesFragment = function (features) {
   var featuresFragment = document.createDocumentFragment();
   features.forEach(function (item) {
     var li = document.createElement('li');
-    li.className = 'feature__image feature__image--' + item;
+    li.className = 'popup__feature popup__feature--' + item;
     featuresFragment.appendChild(li);
   });
   return featuresFragment;
 };
 
+var dropActiveCard = function (card) {
+  map.removeChild(card);
+  document.removeEventListener('keydown', onKeydownEsc);
+};
+
+var onCloseCard = function (evt) {
+  dropActiveCard(evt.currentTarget.parentNode);
+};
+
+var onKeydownEsc = function (evt) {
+  if (evt.key === 'Escape') {
+    var currentCard = map.querySelector('.map__card');
+    dropActiveCard(currentCard);
+  }
+};
+
 // создание карточки объявления на карте
 var renderCard = function (offerObject) {
-  var newOfferCard = template.querySelector('.map__card');
+  var newOfferCard = template.querySelector('.map__card').cloneNode(true);
   newOfferCard.querySelector('.popup__avatar').src = offerObject.author.avatar;
   newOfferCard.querySelector('.popup__title').textContent = offerObject.offer.title;
   newOfferCard.querySelector('.popup__text--address').textContent = offerObject.offer.address;
@@ -192,7 +184,10 @@ var renderCard = function (offerObject) {
   newOfferCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerObject.offer.checkin + ', выезд до ' + offerObject.offer.checkout;
 
   var featuresFragment = getFeaturesFragment(offerObject.offer.features);
-  newOfferCard.querySelector('.popup__features').appendChild(featuresFragment);
+  var popupFeaturesElement = newOfferCard.querySelector('.popup__features');
+  popupFeaturesElement.innerHTML = '';
+  popupFeaturesElement.appendChild(featuresFragment);
+
   newOfferCard.querySelector('.popup__description').textContent = offerObject.offer.description;
 
   var popupPhotosElement = newOfferCard.querySelector('.popup__photos');
@@ -209,7 +204,33 @@ var renderCard = function (offerObject) {
     popupPhotosElement.appendChild(newPhotoImg);
   }
 
+  newOfferCard.querySelector('.popup__close').addEventListener('click', onCloseCard);
+
+  document.addEventListener('keydown', onKeydownEsc);
+
+  var currentCard = map.querySelector('.map__card');
+
+  if (currentCard) {
+    return map.replaceChild(newOfferCard, currentCard);
+  }
   map.appendChild(newOfferCard);
+  return newOfferCard;
+};
+
+// Поставили обработчик события по pin
+var onPinClick = function (offer) {
+  renderCard(offer);
+};
+
+var deactivatePin = function () {
+  var activePins = map.querySelector('.map__pin--active');
+  if (activePins) {
+    activePins.classList.remove('map__pin--active');
+  }
+};
+
+var activatePin = function (evt) {
+  evt.currentTarget.classList.add('map__pin--active');
 };
 
 // создание DOM элементов для метки на карте
@@ -223,17 +244,11 @@ var createPins = function (offersArr) {
     newPinNode.style.left = (offersArr[i].location.x - pinSize.HEIGHT / 2) + 'px';
 
     pinsMap.appendChild(newPinNode);
-    var activatePin = function () {
-      newPinNode.classList.add('map__pin--active');
-    };
-    var deactivatePin = function () {
-      newPinNode.classList.remove('map__pin--active');
-    };
+
+    newPinNode.addEventListener('click', onPinClick.bind(undefined, offersArr[i]));
+    newPinNode.addEventListener('click', deactivatePin);
+    newPinNode.addEventListener('click', activatePin);
   }
-  newPinNode.addEventListener('click', function (evt) {
-    deactivatePin();
-    activatePin(evt.currentTarget);
-  });
   mapPins.appendChild(pinsMap);
 };
 
