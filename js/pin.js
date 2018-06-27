@@ -120,7 +120,6 @@
       upEvt.preventDefault();
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);
-      window.adForm.setAddress(window.getMainPinAddress());
     };
   };
 
