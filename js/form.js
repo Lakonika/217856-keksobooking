@@ -1,13 +1,13 @@
 'use strict';
 (function () {
 
-  window.adForm = document.querySelector('.ad-form');
-  var checkInField = window.adForm.querySelector('#timein');
-  var checkOutField = window.adForm.querySelector('#timeout');
-  var roomsField = window.adForm.querySelector('#room_number');
-  var capacityField = window.adForm.querySelector('#capacity');
-  var typeField = window.adForm.querySelector('#type');
-  var priceField = window.adForm.querySelector('#price');
+  var adForm = document.querySelector('.ad-form');
+  var checkInField = adForm.querySelector('#timein');
+  var checkOutField = adForm.querySelector('#timeout');
+  var roomsField = adForm.querySelector('#room_number');
+  var capacityField = adForm.querySelector('#capacity');
+  var typeField = adForm.querySelector('#type');
+  var priceField = adForm.querySelector('#price');
 
   // Установление корреляций минимальной цены и типа жилья
   var minPrices = {
@@ -52,7 +52,7 @@
   };
 
   roomsField.addEventListener('change', function (evt) {
-    setCapacity(capacityField, evt.target.value);
+    setCapacity(evt.target.value);
   });
 
   // Установление корреляций минимальной цены и типа жилья
@@ -66,8 +66,11 @@
   });
 
   // Перевод формы в активное состояние
-  window.activateForm = function () {
-    window.adForm.classList.remove('ad-form--disabled');
+  var activateForm = function () {
+    adForm.classList.remove('ad-form--disabled');
   };
 
+  window.form = {
+    activateForm: activateForm,
+  };
 })();

@@ -6,7 +6,7 @@
   var AVATAR_EXT = '.png';
 
 
-  window.window.OFFER_DETAILS = {
+  var OFFER_DETAILS = {
     TITLES: [
       'Большая уютная квартира',
       'Маленькая неуютная квартира',
@@ -53,14 +53,11 @@
     ]
   };
 
-  window.template = document.querySelector('template').content;
-  window.map = document.querySelector('.map');
-
   // Перевод карты в активное состояние, генерация пинов на карте
-  window.activateMap = function () {
-    window.map.classList.remove('map--faded');
+  var activateMap = function () {
+    window.commonElements.mapElement.classList.remove('map--faded');
     var allPins = makeRandomOffers();
-    window.createPins(allPins);
+    window.pin.createPins(allPins);
   };
 
   // получение пути к файлу аватара
@@ -77,25 +74,30 @@
       newOffer.author = {};
       newOffer.author.avatar = getAvatarPath(i + 1);
       newOffer.offer = {};
-      newOffer.offer.title = window.OFFER_DETAILS.TITLES[window.getRandomNumber(0, window.OFFER_DETAILS.TITLES.length - 1)];
+      newOffer.offer.title = OFFER_DETAILS.TITLES[window.utils.getRandomNumber(0, OFFER_DETAILS.TITLES.length - 1)];
       newOffer.location = {};
-      newOffer.location.x = window.getRandomNumber(300, 900);
-      newOffer.location.y = window.getRandomNumber(100, 500);
+      newOffer.location.x = window.utils.getRandomNumber(300, 900);
+      newOffer.location.y = window.utils.getRandomNumber(100, 500);
       newOffer.offer.address = newOffer.location.x + ', ' + newOffer.location.y;
-      newOffer.offer.price = window.getRandomNumber(1000, 100000);
-      newOffer.offer.type = window.OFFER_DETAILS.HOUSE_TYPE[window.getRandomNumber(0, window.OFFER_DETAILS.HOUSE_TYPE.length)];
-      newOffer.offer.rooms = window.getRandomNumber(1, 5);
-      newOffer.offer.guests = window.getRandomNumber(1, 5);
-      newOffer.offer.checkin = window.OFFER_DETAILS.CHECK_TIMES[window.getRandomNumber(0, 2)];
-      newOffer.offer.checkout = window.OFFER_DETAILS.CHECK_TIMES[window.getRandomNumber(0, 2)];
+      newOffer.offer.price = window.utils.getRandomNumber(1000, 100000);
+      newOffer.offer.type = OFFER_DETAILS.HOUSE_TYPE[window.utils.getRandomNumber(0, OFFER_DETAILS.HOUSE_TYPE.length)];
+      newOffer.offer.rooms = window.utils.getRandomNumber(1, 5);
+      newOffer.offer.guests = window.utils.getRandomNumber(1, 5);
+      newOffer.offer.checkin = OFFER_DETAILS.CHECK_TIMES[window.utils.getRandomNumber(0, 2)];
+      newOffer.offer.checkout = OFFER_DETAILS.CHECK_TIMES[window.utils.getRandomNumber(0, 2)];
       newOffer.offer.description = '';
-      newOffer.offer.photos = window.getRandomCollection(window.getRandomNumber(0, window.OFFER_DETAILS.PHOTOS.length), window.OFFER_DETAILS.PHOTOS);
-      newOffer.offer.features = window.getRandomCollection(window.getRandomNumber(0, window.OFFER_DETAILS.FEATURES.length - 1), window.OFFER_DETAILS.FEATURES);
+      newOffer.offer.photos = window.utils.getRandomCollection(window.utils.getRandomNumber(0, OFFER_DETAILS.PHOTOS.length), OFFER_DETAILS.PHOTOS);
+      newOffer.offer.features = window.utils.getRandomCollection(window.utils.getRandomNumber(0, OFFER_DETAILS.FEATURES.length - 1), OFFER_DETAILS.FEATURES);
 
       result.push(newOffer);
     }
 
     return result;
+  };
+
+  window.map = {
+    activateMap: activateMap,
+    offerDetails: OFFER_DETAILS
   };
 
 })();

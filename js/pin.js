@@ -33,28 +33,28 @@
 
   // Поставили обработчик события по pin
   var onPinClick = function (offer) {
-    window.renderCard(offer);
+    window.card.renderCard(offer);
   };
 
   // Удаление класса выделенного элемента
   var deactivatePin = function () {
-    var activePins = window.map.querySelector('.map__pin--active');
+    var activePins = window.commonElements.mapElement.querySelector('.map__pin--active');
     if (activePins) {
       activePins.classList.remove('map__pin--active');
     }
   };
 
   // Добавление класса выделенного элемента
-  window.activatePin = function (evt) {
+  var activatePin = function (evt) {
     evt.currentTarget.classList.add('map__pin--active');
   };
 
   // создание DOM элементов для метки на карте
-  window.createPins = function (offersArr) {
+  var createPins = function (offersArr) {
 
     var pinsMap = document.createDocumentFragment();
     for (var i = 0; i < offersArr.length - 1; i++) {
-      var newPinNode = window.template.querySelector('.map__pin').cloneNode(true);
+      var newPinNode = window.commonElements.templateElement.querySelector('.map__pin').cloneNode(true);
       newPinNode.querySelector('img').src = offersArr[i].author.avatar;
       newPinNode.style.top = (offersArr[i].location.y - pinSize.WIDTH / 2) + 'px';
       newPinNode.style.left = (offersArr[i].location.x - pinSize.HEIGHT / 2) + 'px';
@@ -78,7 +78,7 @@
   };
 
   // Получение адреса метки mainPin на карте
-  window.getMainPinAddress = function () {
+  var getMainPinAddress = function () {
     var addressX = Math.round(mainPin.offsetLeft + (pageActivated ? mainPinOptions.on.WIDTH / 2 : mainPinOptions.off.WIDTH / 2));
     var addressY = Math.round(mainPin.offsetTop + (pageActivated ? mainPinOptions.on.HEIGHT / 2 : mainPinOptions.off.HEIGHT / 2));
     var coord = {
@@ -88,7 +88,7 @@
     return coord;
   };
 
-  window.mainPinHandler = function (evt) {
+  var mainPinHandler = function (evt) {
     evt.preventDefault();
 
     var startCoords = {
@@ -107,29 +107,59 @@
         y: mainPin.offsetTop - shift.y,
       };
 
+      var minCoords = {
+        x: -mainPin.clientWidth / 2,
+        y: mainPinOptions.moveLimits.MIN - mainPinOptions.on.HEIGHT
+      };
+
+      var maxCoords = {
+        x: window.commonElements.mapElement.clientWidth - mainPin.clientWidth / 2,
+        y: mainPinOptions.moveLimits.MAX - mainPinOptions.on.HEIGHT
+      };
+
+      if (newCoords.y > maxCoords.y || newCoords.y < minCoords.y) {
+        newCoords.y = mainPin.offsetTop;
+      }
+
+      if (newCoords.x < minCoords.x || newCoords.x > maxCoords.x) {
+        newCoords.x = mainPin.offsetLeft;
+      }
+
       startCoords = {
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
 
       moveMainPin(newCoords.x, newCoords.y);
-      window.adForm.setAddress(window.getMainPinAddress());
+      setAddress(getMainPinAddress());
     };
 
     var mouseUpHandler = function (upEvt) {
       upEvt.preventDefault();
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);
+      setAddress(getMainPinAddress());
     };
+
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
   };
 
-  var movePin = function () {
-    window.activateForm();
-    window.activateMap();
-    setAddress(window.getMainPinAddress());
-    mainPin.removeEventListener('mouseup', movePin);
+  var initPin = function () {
+    mainPin.addEventListener('mousedown', mainPinHandler);
+    setAddress(getMainPinAddress());
+    window.map.activateMap();
+    window.form.activateForm();
+    mainPin.removeEventListener('mouseup', initPin);
   };
 
-  mainPin.addEventListener('mouseup', movePin);
+  mainPin.addEventListener('mouseup', initPin);
+
+  window.pin = {
+    activatePin: activatePin,
+    createPins: createPins,
+    getMainPinAddress: getMainPinAddress,
+    mainPinHandler: mainPinHandler,
+  };
 
 })();
