@@ -1,8 +1,8 @@
 'use strict';
 (function () {
 
-  var ESCAPE = 'Escape';
-  var photoSize = {
+  var ESCAPE_KEY = 'Escape';
+  var PhotoSize = {
     WIDTH: 45,
     HEIGHT: 40
   };
@@ -18,7 +18,7 @@
   };
 
   var onKeydownEsc = function (evt) {
-    if (evt.key === ESCAPE) {
+    if (evt.key === ESCAPE_KEY) {
       var currentCard = window.commonElements.mapElement.querySelector('.map__card');
       dropActiveCard(currentCard);
     }
@@ -42,8 +42,8 @@
       var newPhotoImg = document.createElement('img');
       newPhotoImg.src = window.utils.getRandomCollection(window.utils.getRandomNumber(1, window.map.offerDetails.PHOTOS.length - 1), window.map.offerDetails.PHOTOS);
       newPhotoImg.className = 'popup__photo';
-      newPhotoImg.width = photoSize.WIDTH;
-      newPhotoImg.height = photoSize.HEIGHT;
+      newPhotoImg.width = PhotoSize.WIDTH;
+      newPhotoImg.height = PhotoSize.HEIGHT;
       newPhotoImg.alt = 'Фотография жилья';
       photosFragment.appendChild(newPhotoImg);
     });

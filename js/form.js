@@ -10,7 +10,7 @@
   var priceField = adForm.querySelector('#price');
 
   // Установление корреляций минимальной цены и типа жилья
-  var minPrices = {
+  var MinPrices = {
     bungalo: 0,
     flat: 1000,
     house: 5000,
@@ -62,7 +62,7 @@
   };
 
   typeField.addEventListener('change', function (evt) {
-    setMinPrice(minPrices[evt.target.value]);
+    setMinPrice(MinPrices[evt.target.value]);
   });
 
   // Перевод формы в активное состояние
