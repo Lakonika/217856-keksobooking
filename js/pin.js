@@ -89,14 +89,12 @@
   };
 
   var mainPinHandler = function (evt) {
-    evt.preventDefault();
-
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
     };
 
-    var mouseMoveHandler = function (moveEvt) {
+    var onMouseMove = function (moveEvt) {
       var shift = {
         x: startCoords.x - moveEvt.clientX,
         y: startCoords.y - moveEvt.clientY
@@ -104,7 +102,7 @@
 
       var newCoords = {
         x: mainPin.offsetLeft - shift.x,
-        y: mainPin.offsetTop - shift.y,
+        y: mainPin.offsetTop - shift.y
       };
 
       var minCoords = {
@@ -134,26 +132,25 @@
       setAddress(getMainPinAddress());
     };
 
-    var mouseUpHandler = function (upEvt) {
+    var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      document.removeEventListener('mousemove', mouseMoveHandler);
-      document.removeEventListener('mouseup', mouseUpHandler);
+      document.removeEventListener('mousemove', onMouseMove);
       setAddress(getMainPinAddress());
     };
 
-    document.addEventListener('mousemove', mouseMoveHandler);
-    document.addEventListener('mouseup', mouseUpHandler);
+    document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mousemove', onMouseMove);
   };
 
   var initPin = function () {
-    mainPin.addEventListener('mousedown', mainPinHandler);
-    setAddress(getMainPinAddress());
+    document.addEventListener('mousedown', mainPinHandler);
     window.map.activateMap();
     window.form.activateForm();
-    mainPin.removeEventListener('mouseup', initPin);
+    setAddress(getMainPinAddress());
+    mainPin.removeEventListener('mousedown', initPin);
   };
 
-  mainPin.addEventListener('mouseup', initPin);
+  mainPin.addEventListener('mousedown', initPin);
 
   window.pin = {
     activatePin: activatePin,
