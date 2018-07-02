@@ -2,12 +2,15 @@
 (function () {
 
   var adForm = document.querySelector('.ad-form');
+  var sendForm = adForm.querySelector('.ad-form__submit');
   var checkInField = adForm.querySelector('#timein');
   var checkOutField = adForm.querySelector('#timeout');
   var roomsField = adForm.querySelector('#room_number');
   var capacityField = adForm.querySelector('#capacity');
   var typeField = adForm.querySelector('#type');
   var priceField = adForm.querySelector('#price');
+  var adFieldset = adForm.querySelectorAll('.ad-form__element > input');
+  var success = document.querySelector('.success');
 
   // Установление корреляций минимальной цены и типа жилья
   var MinPrices = {
@@ -70,7 +73,44 @@
     adForm.classList.remove('ad-form--disabled');
   };
 
+  // Отключение формы
+  var deactivateForm = function () {
+    adForm.reset();
+    adForm.classList.add('ad-form--disabled');
+  };
+
+  // Появление окна успешной отправки формы
+  var enableSuccess = function () {
+    success.classList.remove('hidden');
+  };
+
+  var closeSuccess = function () {
+    success.classList.add('hidden');
+  };
+
+  // Обработчик события по кнопке отправки формы
+  var onSendClick = function (evt) {
+    evt.preventDefault();
+    deactivateForm();
+    enableSuccess();
+    window.map.deactivateMap();
+  };
+
+  // Обработчик события по кнопке закрытия попапа
+  success.addEventListener('click', function () {
+    closeSuccess();
+  });
+
+  window.addEventListener('keydown', function (evt) {
+    if (evt.key === window.utils.ESCAPE_KEY) {
+      closeSuccess();
+    }
+  });
+
+  sendForm.addEventListener('click', onSendClick);
+
   window.form = {
     activateForm: activateForm,
+    adFieldset: adFieldset,
   };
 })();

@@ -1,7 +1,6 @@
 'use strict';
 (function () {
 
-  var ESCAPE_KEY = 'Escape';
   var PhotoSize = {
     WIDTH: 45,
     HEIGHT: 40
@@ -9,7 +8,7 @@
 
   // Удаление карточки объявления на карте
   var dropActiveCard = function (card) {
-    window.commonElements.mapElement.removeChild(card);
+    window.common.mapElement.removeChild(card);
     document.removeEventListener('keydown', onKeydownEsc);
   };
 
@@ -18,8 +17,8 @@
   };
 
   var onKeydownEsc = function (evt) {
-    if (evt.key === ESCAPE_KEY) {
-      var currentCard = window.commonElements.mapElement.querySelector('.map__card');
+    if (evt.key === window.utils.ESCAPE_KEY) {
+      var currentCard = window.common.mapElement.querySelector('.map__card');
       dropActiveCard(currentCard);
     }
   };
@@ -36,23 +35,20 @@
   };
 
   // создание элемента с фото
-  var getPhotosFragment = function (photos) {
-    var photosFragment = document.createDocumentFragment();
-    photos.forEach(function () {
-      var newPhotoImg = document.createElement('img');
-      newPhotoImg.src = window.utils.getRandomCollection(window.utils.getRandomNumber(1, window.map.offerDetails.PHOTOS.length - 1), window.map.offerDetails.PHOTOS);
-      newPhotoImg.className = 'popup__photo';
-      newPhotoImg.width = PhotoSize.WIDTH;
-      newPhotoImg.height = PhotoSize.HEIGHT;
-      newPhotoImg.alt = 'Фотография жилья';
-      photosFragment.appendChild(newPhotoImg);
-    });
-    return photosFragment;
+  var getPhotosFragment = function (src) {
+    var newPhotoImg = document.createElement('img');
+    newPhotoImg.classList.add('popup__photo');
+    newPhotoImg.src = src;
+    newPhotoImg.width = PhotoSize.WIDTH;
+    newPhotoImg.height = PhotoSize.HEIGHT;
+    newPhotoImg.alt = 'Фотография жилья';
+
+    return newPhotoImg;
   };
 
   // создание карточки объявления на карте
   var renderCard = function (offerObject) {
-    var newOfferCard = window.commonElements.templateElement.querySelector('.map__card').cloneNode(true);
+    var newOfferCard = window.common.templateElement.querySelector('.map__card').cloneNode(true);
     newOfferCard.querySelector('.popup__avatar').src = offerObject.author.avatar;
     newOfferCard.querySelector('.popup__title').textContent = offerObject.offer.title;
     newOfferCard.querySelector('.popup__text--address').textContent = offerObject.offer.address;
@@ -68,26 +64,26 @@
 
     newOfferCard.querySelector('.popup__description').textContent = offerObject.offer.description;
 
-    var photosFragment = getPhotosFragment(offerObject.offer.photos);
-    var popupPhotosElement = newOfferCard.querySelector('.popup__photos');
-    popupPhotosElement.innerHTML = '';
-    popupPhotosElement.appendChild(photosFragment);
+    offerObject.offer.photos.forEach(function (item) {
+      newOfferCard.querySelector('.popup__photos').appendChild(getPhotosFragment(item));
+    });
 
     newOfferCard.querySelector('.popup__close').addEventListener('click', onCloseCard);
 
     document.addEventListener('keydown', onKeydownEsc);
 
-    var currentCard = window.commonElements.mapElement.querySelector('.map__card');
+    var currentCard = window.common.mapElement.querySelector('.map__card');
 
     if (currentCard) {
-      return window.commonElements.mapElement.replaceChild(newOfferCard, currentCard);
+      return window.common.mapElement.replaceChild(newOfferCard, currentCard);
     }
-    window.commonElements.mapElement.appendChild(newOfferCard);
+    window.common.mapElement.appendChild(newOfferCard);
     return newOfferCard;
   };
 
   window.card = {
-    renderCard: renderCard
+    renderCard: renderCard,
+    dropActiveCard: dropActiveCard
   };
 
 })();

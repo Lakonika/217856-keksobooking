@@ -2,7 +2,7 @@
 
 (function () {
 
-  window.commonElements = {
+  window.common = {
     templateElement: document.querySelector('template').content,
     mapElement: document.querySelector('.map'),
   };
