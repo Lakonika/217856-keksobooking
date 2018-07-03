@@ -36,7 +36,7 @@
   };
 
   var checkPriceValue = function () {
-    if (adPriceInput.value > prices.MAX) {
+    if (adPriceInput.validity > prices.MAX) {
       adPriceInput.setCustomValidity('Цена не должна превышать 1000000.');
     } else if (adPriceInput.valueMissing) {
       adPriceInput.setCustomValidity('Укажите цену.');
@@ -48,13 +48,11 @@
   adPriceInput.addEventListener('change', checkPriceValue);
 
   var checkTitleValue = function () {
-    if (adTitleInput.value < 30) {
+    if (adTitleInput.validity.tooShort) {
       adTitleInput.setCustomValidity('Заголовок объявления должен содержать не меньше 30 симоволов.');
-    }
-    if (adTitleInput.value > 100) {
+    } else if (adTitleInput.validity.tooLong) {
       adTitleInput.setCustomValidity('Заголовок объявления должен содержать не более 100 символов.');
-    }
-    if (adTitleInput.valueMissing) {
+    } else if (adTitleInput.validity.valueMissing) {
       adTitleInput.setCustomValidity('Озаглавьте объявление.');
     } else {
       adTitleInput.setCustomValidity('');
