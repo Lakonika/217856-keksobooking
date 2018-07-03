@@ -10,9 +10,14 @@
   var typeField = adForm.querySelector('#type');
   var priceField = adForm.querySelector('#price');
   var adFieldset = adForm.querySelectorAll('.ad-form__element');
-  // var adTitleInput = adForm.querySelector('#title');
-  // var adPriceInput = adForm.querySelector('#price');
+  var adTitleInput = adForm.querySelector('#title');
+  var adPriceInput = adForm.querySelector('#price');
   var success = document.querySelector('.success');
+
+  var prices = {
+    MIN: 0,
+    MAX: 1000000
+  };
 
   // Установление корреляций минимальной цены и типа жилья
   var MinPrices = {
@@ -29,6 +34,32 @@
     '3': ['1', '2', '3'],
     '100': ['0']
   };
+
+  var checkPriceValue = function () {
+    if (adPriceInput.value > prices.MAX) {
+      adPriceInput.setCustomValidity('Цена не должна превышать 1000000.');
+    } else if (adPriceInput.value.valueMissing) {
+      adPriceInput.setCustomValidity('Укажите цену.');
+    } else {
+      adPriceInput.setCustomValidity('');
+    }
+  };
+
+  adPriceInput.addEventListener('keydown', checkPriceValue);
+
+  var checkTitleValue = function () {
+    if (adTitleInput.validity.tooShort) {
+      adTitleInput.setCustomValidity('Заголовок объявления должен содержать не меньше 30 симоволов.');
+    } else if (adTitleInput.validity.tooLong) {
+      adTitleInput.setCustomValidity('Заголовок объявления должен содержать не более 100 символов.');
+    } else if (adTitleInput.validity.valueMissing) {
+      adTitleInput.setCustomValidity('Озаглавьте объявление.');
+    } else {
+      adTitleInput.setCustomValidity('');
+    }
+  };
+
+  adTitleInput.addEventListener('keydown', checkTitleValue);
 
   // Установление корреляций между временем прибытия и отъезда
   var setTimeField = function (field, value) {
@@ -109,8 +140,7 @@
   };
 
   // Обработчик события по кнопке отправки формы
-  var onSendClick = function (evt) {
-    evt.preventDefault();
+  var onSendClick = function () {
     var data = new FormData(adForm);
     window.backend.uploadData(data, formSuccessMessage, formErrorMessage);
     deactivateForm();
