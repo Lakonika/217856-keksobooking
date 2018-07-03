@@ -38,28 +38,30 @@
   var checkPriceValue = function () {
     if (adPriceInput.value > prices.MAX) {
       adPriceInput.setCustomValidity('Цена не должна превышать 1000000.');
-    } else if (adPriceInput.value.valueMissing) {
+    } else if (adPriceInput.valueMissing) {
       adPriceInput.setCustomValidity('Укажите цену.');
     } else {
       adPriceInput.setCustomValidity('');
     }
   };
 
-  adPriceInput.addEventListener('keydown', checkPriceValue);
+  adPriceInput.addEventListener('change', checkPriceValue);
 
   var checkTitleValue = function () {
-    if (adTitleInput.validity.tooShort) {
+    if (adTitleInput.value < 30) {
       adTitleInput.setCustomValidity('Заголовок объявления должен содержать не меньше 30 симоволов.');
-    } else if (adTitleInput.validity.tooLong) {
+    }
+    if (adTitleInput.value > 100) {
       adTitleInput.setCustomValidity('Заголовок объявления должен содержать не более 100 символов.');
-    } else if (adTitleInput.validity.valueMissing) {
+    }
+    if (adTitleInput.valueMissing) {
       adTitleInput.setCustomValidity('Озаглавьте объявление.');
     } else {
       adTitleInput.setCustomValidity('');
     }
   };
 
-  adTitleInput.addEventListener('keydown', checkTitleValue);
+  adTitleInput.addEventListener('change', checkTitleValue);
 
   // Установление корреляций между временем прибытия и отъезда
   var setTimeField = function (field, value) {
