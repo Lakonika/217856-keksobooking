@@ -8,6 +8,14 @@
 
   // Удаление карточки объявления на карте
   var dropActiveCard = function (card) {
+    if (!card) {
+      card = window.common.mapElement.querySelector('.map__card');
+    }
+
+    if (!card) {
+      return;
+    }
+
     window.common.mapElement.removeChild(card);
     document.removeEventListener('keydown', onKeydownEsc);
   };
@@ -18,7 +26,7 @@
 
   var onKeydownEsc = function (evt) {
     if (evt.key === window.utils.ESCAPE_KEY) {
-      var currentCard = window.common.mapElement.querySelector('.map__card');
+      var currentCard = window.common.mapElement.querySelector('map__card');
       dropActiveCard(currentCard);
     }
   };
@@ -63,6 +71,9 @@
     popupFeaturesElement.appendChild(featuresFragment);
 
     newOfferCard.querySelector('.popup__description').textContent = offerObject.offer.description;
+
+    var popupPhotosElement = newOfferCard.querySelector('.popup__photos');
+    popupPhotosElement.innerHTML = '';
 
     offerObject.offer.photos.forEach(function (item) {
       newOfferCard.querySelector('.popup__photos').appendChild(getPhotosFragment(item));

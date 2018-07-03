@@ -23,10 +23,9 @@
 
   // Перевод карты в неактивное состояние, удаление элементов на карте
   var deactivateMap = function () {
-    window.common.mapElement.classList.add('.map--faded');
+    window.common.mapElement.classList.add('map--faded');
     window.pin.deletePins();
-    var card = window.common.mapElement.querySelector('.map__card');
-    card.remove(0);
+    window.card.dropActiveCard();
   };
 
   window.map = {

@@ -151,9 +151,17 @@
   };
 
   var deletePins = function () {
-    while (mapPins.firstChild) {
-      mapPins.removeChild(mapPins.firstChild);
+    var allPinsList = mapPins.querySelectorAll('.map__pin');
+
+    for (var i = 0; i < allPinsList.length; i++) {
+      if (allPinsList[i].classList.contains('map__pin--main')) {
+        continue;
+      }
+      mapPins.removeChild(allPinsList[i]);
     }
+    moveMainPin(MainPinOptions.start.LEFT, MainPinOptions.start.TOP);
+    mainPin.addEventListener('mousedown', initPin);
+    mainPin.addEventListener('mouseup', initPage);
   };
 
   var initPage = function () {

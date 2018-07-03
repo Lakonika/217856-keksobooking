@@ -9,7 +9,9 @@
   var capacityField = adForm.querySelector('#capacity');
   var typeField = adForm.querySelector('#type');
   var priceField = adForm.querySelector('#price');
-  var adFieldset = adForm.querySelectorAll('.ad-form__element > input');
+  var adFieldset = adForm.querySelectorAll('.ad-form__element');
+  // var adTitleInput = adForm.querySelector('#title');
+  // var adPriceInput = adForm.querySelector('#price');
   var success = document.querySelector('.success');
 
   // Установление корреляций минимальной цены и типа жилья
@@ -68,20 +70,52 @@
     setMinPrice(MinPrices[evt.target.value]);
   });
 
+  var enableFieldsets = function () {
+    adFieldset.forEach(function (item) {
+      item.disabled = false;
+    });
+  };
+
   // Перевод формы в активное состояние
   var activateForm = function () {
     adForm.classList.remove('ad-form--disabled');
+    enableFieldsets();
+  };
+
+  var disableFieldsets = function () {
+    adFieldset.forEach(function (item) {
+      item.disabled = true;
+    });
   };
 
   // Отключение формы
   var deactivateForm = function () {
     adForm.reset();
     adForm.classList.add('ad-form--disabled');
+    disableFieldsets();
   };
 
+  // var onIncorrectValue = function (item) {
+  //   var inputCorrectValue = item.checkValidity();
+  //   if (inputCorrectValue) {
+  //     item.parentNode.classList.add('ad-form__element--incorrect');
+  //   }
+  // };
+  //
+  // var checkInputValue = function () {
+  //   adTitleInput.addEventListener('keydown', onIncorrectValue);
+  //   adTitleInput.addEventListener('change', onIncorrectValue);
+  //   adPriceInput.addEventListener('keydown', onIncorrectValue);
+  //   adPriceInput.addEventListener('change', onIncorrectValue);
+  // };
+
   // Появление окна успешной отправки формы
-  var enableSuccess = function () {
+  var formSuccessMessage = function () {
     success.classList.remove('hidden');
+  };
+
+  var formErrorMessage = function (errorMessage) {
+    document.body.insertAdjacentElement('afterbegin', window.error.createPopup(errorMessage));
   };
 
   var closeSuccess = function () {
@@ -91,9 +125,12 @@
   // Обработчик события по кнопке отправки формы
   var onSendClick = function (evt) {
     evt.preventDefault();
+    // if (!checkInputValue) {
+    var data = new FormData(adForm);
+    window.backend.uploadData(data, formSuccessMessage, formErrorMessage);
     deactivateForm();
-    enableSuccess();
     window.map.deactivateMap();
+    // }
   };
 
   // Обработчик события по кнопке закрытия попапа
