@@ -95,20 +95,6 @@
     disableFieldsets();
   };
 
-  // var onIncorrectValue = function (item) {
-  //   var inputCorrectValue = item.checkValidity();
-  //   if (inputCorrectValue) {
-  //     item.parentNode.classList.add('ad-form__element--incorrect');
-  //   }
-  // };
-  //
-  // var checkInputValue = function () {
-  //   adTitleInput.addEventListener('keydown', onIncorrectValue);
-  //   adTitleInput.addEventListener('change', onIncorrectValue);
-  //   adPriceInput.addEventListener('keydown', onIncorrectValue);
-  //   adPriceInput.addEventListener('change', onIncorrectValue);
-  // };
-
   // Появление окна успешной отправки формы
   var formSuccessMessage = function () {
     success.classList.remove('hidden');
@@ -125,12 +111,10 @@
   // Обработчик события по кнопке отправки формы
   var onSendClick = function (evt) {
     evt.preventDefault();
-    // if (!checkInputValue) {
     var data = new FormData(adForm);
     window.backend.uploadData(data, formSuccessMessage, formErrorMessage);
     deactivateForm();
     window.map.deactivateMap();
-    // }
   };
 
   // Обработчик события по кнопке закрытия попапа
