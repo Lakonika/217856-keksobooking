@@ -53,7 +53,7 @@
   var createPins = function (offersArr) {
 
     var pinsMap = document.createDocumentFragment();
-    for (var i = 0; i < offersArr.length - 1; i++) {
+    for (var i = 0; i < offersArr.length; i++) {
       var newPinNode = window.common.templateElement.querySelector('.map__pin').cloneNode(true);
       newPinNode.querySelector('img').src = offersArr[i].author.avatar;
       newPinNode.style.top = (offersArr[i].location.y - pinSize.WIDTH / 2) + 'px';
