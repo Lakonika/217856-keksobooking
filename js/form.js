@@ -37,8 +37,10 @@
   // Проверка введенных пользователем данных в поле цены
   var checkPriceValue = function () {
     if (adPriceInput.validity > prices.MAX) {
+      adPriceInput.focus();
       adPriceInput.setCustomValidity('Цена не должна превышать 1000000.');
     } else if (adPriceInput.valueMissing) {
+      adPriceInput.focus();
       adPriceInput.setCustomValidity('Укажите цену.');
     } else {
       adPriceInput.setCustomValidity('');
@@ -50,10 +52,13 @@
   // Проверка введенных пользователем данных в поле заголовка
   var checkTitleValue = function () {
     if (adTitleInput.validity.tooShort) {
+      adTitleInput.focus();
       adTitleInput.setCustomValidity('Заголовок объявления должен содержать не меньше 30 симоволов.');
     } else if (adTitleInput.validity.tooLong) {
+      adTitleInput.focus();
       adTitleInput.setCustomValidity('Заголовок объявления должен содержать не более 100 символов.');
     } else if (adTitleInput.validity.valueMissing) {
+      adTitleInput.focus();
       adTitleInput.setCustomValidity('Озаглавьте объявление.');
     } else {
       adTitleInput.setCustomValidity('');
