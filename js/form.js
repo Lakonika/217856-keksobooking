@@ -141,11 +141,14 @@
   };
 
   // Обработчик события по кнопке отправки формы
-  var onSendClick = function () {
-    var data = new FormData(adForm);
-    window.backend.uploadData(data, formSuccessMessage, formErrorMessage);
-    deactivateForm();
-    window.map.deactivateMap();
+  var onSendClick = function (evt) {
+    evt.preventDefault();
+    if (adTitleInput.validity.valid && adPriceInput.validity.valid) {
+      var data = new FormData(adForm);
+      window.backend.uploadData(data, formSuccessMessage, formErrorMessage);
+      deactivateForm();
+      window.map.deactivateMap();
+    }
   };
 
   // Обработчик события по кнопке закрытия попапа
