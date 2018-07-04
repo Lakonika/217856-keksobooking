@@ -34,7 +34,7 @@
     '3': ['1', '2', '3'],
     '100': ['0']
   };
-
+  // Проверка введенных пользователем данных в поле цены
   var checkPriceValue = function () {
     if (adPriceInput.validity > prices.MAX) {
       adPriceInput.setCustomValidity('Цена не должна превышать 1000000.');
@@ -47,6 +47,7 @@
 
   adPriceInput.addEventListener('change', checkPriceValue);
 
+  // Проверка введенных пользователем данных в поле заголовка
   var checkTitleValue = function () {
     if (adTitleInput.validity.tooShort) {
       adTitleInput.setCustomValidity('Заголовок объявления должен содержать не меньше 30 симоволов.');
