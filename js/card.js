@@ -76,7 +76,7 @@
     popupPhotosElement.innerHTML = '';
 
     offerObject.offer.photos.forEach(function (item) {
-      newOfferCard.querySelector('.popup__photos').appendChild(getPhotosFragment(item));
+      popupPhotosElement.appendChild(getPhotosFragment(item));
     });
 
     newOfferCard.querySelector('.popup__close').addEventListener('click', onCloseCard);

@@ -18,7 +18,10 @@
   // Перевод карты в активное состояние, генерация пинов на карте
   var activateMap = function () {
     window.common.mapElement.classList.remove('map--faded');
-    window.backend.downloadData(window.pin.createPins);
+    window.backend.downloadData(function (loadedData) {
+      window.common.allPins = loadedData;
+      window.pin.createPins(window.common.allPins);
+    });
   };
 
   // Перевод карты в неактивное состояние, удаление элементов на карте

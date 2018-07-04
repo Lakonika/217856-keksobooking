@@ -149,8 +149,7 @@
   var onSendClick = function (evt) {
     evt.preventDefault();
     if (adTitleInput.validity.valid && adPriceInput.validity.valid) {
-      var data = new FormData(adForm);
-      window.backend.uploadData(data, formSuccessMessage, formErrorMessage);
+      formSuccessMessage();
       deactivateForm();
       window.map.deactivateMap();
     }
@@ -172,5 +171,6 @@
   window.form = {
     activateForm: activateForm,
     adFieldset: adFieldset,
+    formErrorMessage: formErrorMessage
   };
 })();
