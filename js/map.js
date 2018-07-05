@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+  var SIMILAR_OFFERS_NUMBER = 5;
   var OFFER_DETAILS = {
     HOUSE_TYPE: [
       'flat',
@@ -21,7 +22,7 @@
     window.common.mapElement.classList.remove('map--faded');
     if (createdPins.length === 1) {
       window.backend.downloadData(function (loadedData) {
-        window.common.allPins = loadedData;
+        window.common.allPins = loadedData.slice(0, SIMILAR_OFFERS_NUMBER);
         window.pin.createPins(window.common.allPins);
       });
     }
@@ -31,6 +32,7 @@
   var deactivateMap = function () {
     window.common.mapElement.classList.add('map--faded');
     window.pin.deletePins();
+    window.pin.returnMainPin();
     window.card.dropActiveCard();
   };
 

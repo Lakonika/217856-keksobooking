@@ -159,9 +159,12 @@
       }
       mapPins.removeChild(allPinsList[i]);
     }
-    moveMainPin(MainPinOptions.start.LEFT, MainPinOptions.start.TOP);
     mainPin.addEventListener('mousedown', initPin);
     mainPin.addEventListener('mouseup', initPage);
+  };
+
+  var returnMainPin = function () {
+    moveMainPin(MainPinOptions.start.LEFT, MainPinOptions.start.TOP);
   };
 
   var initPage = function () {
@@ -179,7 +182,8 @@
     createPins: createPins,
     getMainPinAddress: getMainPinAddress,
     onMainPinClick: onMainPinClick,
-    deletePins: deletePins
+    deletePins: deletePins,
+    returnMainPin: returnMainPin
   };
 
 })();

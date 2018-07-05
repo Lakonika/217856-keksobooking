@@ -82,12 +82,12 @@
     });
   };
 
-  var onFiltresFormChange = function () {
+  var onFiltresFormChange = window.utils.debounce(function () {
     window.card.dropActiveCard();
     window.pin.deletePins();
     window.common.filtredPins = setPacketsFilters();
     window.pin.createPins(window.common.filtredPins);
-  };
+  });
 
   filtresForm.addEventListener('change', onFiltresFormChange);
 })();
