@@ -147,7 +147,7 @@
     window.common.mapElement.addEventListener('mousemove', onMouseMove);
   };
 
-  var initPin = function () {
+  var onPinInitiate = function () {
     window.common.mapElement.addEventListener('mousedown', onMainPinClick);
     setAddress(getMainPinAddress());
     mainPin.removeEventListener('mousedown', onMainPinClick);
@@ -163,11 +163,11 @@
       mapPins.removeChild(allPinsList[i]);
     }
     mainPin.addEventListener('mousedown', function () {
-      initPin();
+      onPinInitiate();
     });
 
     mainPin.addEventListener('mouseup', function () {
-      initPage();
+      onPageInitiate();
     });
   };
 
@@ -175,18 +175,18 @@
     moveMainPin(MainPinOptions.start.LEFT, MainPinOptions.start.TOP);
   };
 
-  var initPage = function () {
+  var onPageInitiate = function () {
     window.map.activateMap();
     window.form.activateForm();
-    mainPin.removeEventListener('mouseup', initPage);
+    mainPin.removeEventListener('mouseup', onPageInitiate);
   };
 
   mainPin.addEventListener('mousedown', function () {
-    initPin();
+    onPinInitiate();
   });
 
   mainPin.addEventListener('mouseup', function () {
-    initPage();
+    onPageInitiate();
   });
 
   window.pin = {
@@ -196,8 +196,7 @@
     getMainPinAddress: getMainPinAddress,
     onMainPinClick: onMainPinClick,
     deletePins: deletePins,
-    returnMainPin: returnMainPin,
-    initPage: initPage
+    returnMainPin: returnMainPin
   };
 
 })();

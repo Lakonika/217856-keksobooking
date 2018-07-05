@@ -44,7 +44,7 @@
   var success = document.querySelector('.success');
 
   // Проверка введенных пользователем данных в поле цены
-  var checkPriceValue = function () {
+  var onPriceValueCheck = function () {
     if (adPriceField.validity > Prices.MAX) {
       adPriceField.focus();
       adPriceField.setCustomValidity(Messages.PRICE_EXCEED);
@@ -57,11 +57,11 @@
   };
 
   adPriceField.addEventListener('change', function (evt) {
-    checkPriceValue(evt.target.value);
+    onPriceValueCheck(evt.target.value);
   });
 
   // Проверка введенных пользователем данных в поле заголовка
-  var checkTitleValue = function () {
+  var onTitleValueCheck = function () {
     if (adTitleField.validity.tooShort) {
       adTitleField.focus();
       adTitleField.setCustomValidity(Messages.LESS_SYMBOLS);
@@ -77,7 +77,7 @@
   };
 
   adTitleField.addEventListener('change', function (evt) {
-    checkTitleValue(evt.target.value);
+    onTitleValueCheck(evt.target.value);
   });
 
   // Установление корреляций между временем прибытия и отъезда
