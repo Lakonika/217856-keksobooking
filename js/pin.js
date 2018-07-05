@@ -1,8 +1,7 @@
 'use strict';
+
 (function () {
-
-
-  var pinSize = {
+  var PinSize = {
     WIDTH: 50,
     HEIGHT: 70
   };
@@ -56,14 +55,18 @@
     for (var i = 0; i < offersArr.length; i++) {
       var newPinNode = window.common.templateElement.querySelector('.map__pin').cloneNode(true);
       newPinNode.querySelector('img').src = offersArr[i].author.avatar;
-      newPinNode.style.top = (offersArr[i].location.y - pinSize.WIDTH / 2) + 'px';
-      newPinNode.style.left = (offersArr[i].location.x - pinSize.HEIGHT / 2) + 'px';
+      newPinNode.style.top = (offersArr[i].location.y - PinSize.WIDTH / 2) + 'px';
+      newPinNode.style.left = (offersArr[i].location.x - PinSize.HEIGHT / 2) + 'px';
 
       pinsMap.appendChild(newPinNode);
 
       newPinNode.addEventListener('click', onPinClick.bind(undefined, offersArr[i]));
-      newPinNode.addEventListener('click', deactivatePin);
-      newPinNode.addEventListener('click', activatePin);
+      newPinNode.addEventListener('click', function () {
+        deactivatePin();
+      });
+      newPinNode.addEventListener('click', function (pin) {
+        activatePin(pin);
+      });
     }
     mapPins.appendChild(pinsMap);
   };
@@ -159,8 +162,13 @@
       }
       mapPins.removeChild(allPinsList[i]);
     }
-    mainPin.addEventListener('mousedown', initPin);
-    mainPin.addEventListener('mouseup', initPage);
+    mainPin.addEventListener('mousedown', function () {
+      initPin();
+    });
+
+    mainPin.addEventListener('mouseup', function () {
+      initPage();
+    });
   };
 
   var returnMainPin = function () {
@@ -173,8 +181,13 @@
     mainPin.removeEventListener('mouseup', initPage);
   };
 
-  mainPin.addEventListener('mousedown', initPin);
-  mainPin.addEventListener('mouseup', initPage);
+  mainPin.addEventListener('mousedown', function () {
+    initPin();
+  });
+
+  mainPin.addEventListener('mouseup', function () {
+    initPage();
+  });
 
   window.pin = {
     mainPin: mainPin,
@@ -183,7 +196,8 @@
     getMainPinAddress: getMainPinAddress,
     onMainPinClick: onMainPinClick,
     deletePins: deletePins,
-    returnMainPin: returnMainPin
+    returnMainPin: returnMainPin,
+    initPage: initPage
   };
 
 })();

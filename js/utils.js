@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
 
   var ESCAPE_KEY = 'Escape';

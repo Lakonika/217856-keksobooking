@@ -1,22 +1,17 @@
 'use strict';
+
 (function () {
-
-  var adForm = document.querySelector('.ad-form');
-  var sendForm = adForm.querySelector('.ad-form__submit');
-  var checkInField = adForm.querySelector('#timein');
-  var checkOutField = adForm.querySelector('#timeout');
-  var roomsField = adForm.querySelector('#room_number');
-  var capacityField = adForm.querySelector('#capacity');
-  var typeField = adForm.querySelector('#type');
-  var priceField = adForm.querySelector('#price');
-  var adFieldset = adForm.querySelectorAll('.ad-form__element');
-  var adTitleInput = adForm.querySelector('#title');
-  var adPriceInput = adForm.querySelector('#price');
-  var success = document.querySelector('.success');
-
-  var prices = {
+  var Prices = {
     MIN: 0,
     MAX: 1000000
+  };
+
+  var Messages = {
+    LESS_SYMBOLS: 'Заголовок объявления должен содержать не меньше 30 симоволов',
+    MORE_SYMBOLS: 'Заголовок объявления должен содержать не более 100 символов',
+    EMPTY_TITLE: 'Озаглавьте объявление',
+    SET_PRICE: 'Укажите цену',
+    PRICE_EXCEED: 'Цена не должна превышать 1000000'
   };
 
   // Установление корреляций минимальной цены и типа жилья
@@ -34,38 +29,56 @@
     '3': ['1', '2', '3'],
     '100': ['0']
   };
+
+  var adForm = document.querySelector('.ad-form');
+  var sendForm = adForm.querySelector('.ad-form__submit');
+  var checkInField = adForm.querySelector('#timein');
+  var checkOutField = adForm.querySelector('#timeout');
+  var roomsField = adForm.querySelector('#room_number');
+  var capacityField = adForm.querySelector('#capacity');
+  var typeField = adForm.querySelector('#type');
+  var priceField = adForm.querySelector('#price');
+  var adFieldset = adForm.querySelectorAll('.ad-form__element');
+  var adTitleField = adForm.querySelector('#title');
+  var adPriceField = adForm.querySelector('#price');
+  var success = document.querySelector('.success');
+
   // Проверка введенных пользователем данных в поле цены
   var checkPriceValue = function () {
-    if (adPriceInput.validity > prices.MAX) {
-      adPriceInput.focus();
-      adPriceInput.setCustomValidity('Цена не должна превышать 1000000.');
-    } else if (adPriceInput.valueMissing) {
-      adPriceInput.focus();
-      adPriceInput.setCustomValidity('Укажите цену.');
+    if (adPriceField.validity > Prices.MAX) {
+      adPriceField.focus();
+      adPriceField.setCustomValidity(Messages.PRICE_EXCEED);
+    } else if (adPriceField.valueMissing) {
+      adPriceField.focus();
+      adPriceField.setCustomValidity(Messages.SET_PRICE);
     } else {
-      adPriceInput.setCustomValidity('');
+      adPriceField.setCustomValidity('');
     }
   };
 
-  adPriceInput.addEventListener('change', checkPriceValue);
+  adPriceField.addEventListener('change', function (evt) {
+    checkPriceValue(evt.target.value);
+  });
 
   // Проверка введенных пользователем данных в поле заголовка
   var checkTitleValue = function () {
-    if (adTitleInput.validity.tooShort) {
-      adTitleInput.focus();
-      adTitleInput.setCustomValidity('Заголовок объявления должен содержать не меньше 30 симоволов.');
-    } else if (adTitleInput.validity.tooLong) {
-      adTitleInput.focus();
-      adTitleInput.setCustomValidity('Заголовок объявления должен содержать не более 100 символов.');
-    } else if (adTitleInput.validity.valueMissing) {
-      adTitleInput.focus();
-      adTitleInput.setCustomValidity('Озаглавьте объявление.');
+    if (adTitleField.validity.tooShort) {
+      adTitleField.focus();
+      adTitleField.setCustomValidity(Messages.LESS_SYMBOLS);
+    } else if (adTitleField.validity.tooLong) {
+      adTitleField.focus();
+      adTitleField.setCustomValidity(Messages.MORE_SYMBOLS);
+    } else if (adTitleField.validity.valueMissing) {
+      adTitleField.focus();
+      adTitleField.setCustomValidity(Messages.EMPTY_TITLE);
     } else {
-      adTitleInput.setCustomValidity('');
+      adTitleField.setCustomValidity('');
     }
   };
 
-  adTitleInput.addEventListener('change', checkTitleValue);
+  adTitleField.addEventListener('change', function (evt) {
+    checkTitleValue(evt.target.value);
+  });
 
   // Установление корреляций между временем прибытия и отъезда
   var setTimeField = function (field, value) {
@@ -138,7 +151,7 @@
   };
 
   var formErrorMessage = function (errorMessage) {
-    document.body.insertAdjacentElement('afterbegin', window.error.createPopup(errorMessage));
+    document.body.insertAdjacentElement('afterbegin', window.error.showMessage(errorMessage));
   };
 
   var closeSuccess = function () {
@@ -148,7 +161,7 @@
   // Обработчик события по кнопке отправки формы
   var onSendClick = function (evt) {
     evt.preventDefault();
-    if (adTitleInput.validity.valid && adPriceInput.validity.valid) {
+    if (adTitleField.validity.valid && adPriceField.validity.valid) {
       var data = new FormData(adForm);
       window.backend.uploadData(data, formSuccessMessage, formErrorMessage);
       deactivateForm();

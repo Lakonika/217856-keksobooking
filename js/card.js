@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
 
   var PhotoSize = {
@@ -8,9 +9,7 @@
 
   // Удаление карточки объявления на карте
   var dropActiveCard = function (card) {
-    if (!card) {
-      card = window.common.mapElement.querySelector('.map__card');
-    }
+    card = card || window.common.mapElement.querySelector('.map__card');
 
     if (!card) {
       return;
@@ -35,9 +34,9 @@
   var getFeaturesFragment = function (features) {
     var featuresFragment = document.createDocumentFragment();
     features.forEach(function (item) {
-      var li = document.createElement('li');
-      li.className = 'popup__feature popup__feature--' + item;
-      featuresFragment.appendChild(li);
+      var liFeatureElement = document.createElement('li');
+      liFeatureElement.className = 'popup__feature popup__feature--' + item;
+      featuresFragment.appendChild(liFeatureElement);
     });
     return featuresFragment;
   };
@@ -61,7 +60,7 @@
     newOfferCard.querySelector('.popup__title').textContent = offerObject.offer.title;
     newOfferCard.querySelector('.popup__text--address').textContent = offerObject.offer.address;
     newOfferCard.querySelector('.popup__text--price').textContent = offerObject.offer.price + ' ' + '\u20bd/ночь';
-    newOfferCard.querySelector('.popup__type').textContent = window.map.offerDetails.houseTypesTranslation[offerObject.offer.type];
+    newOfferCard.querySelector('.popup__type').textContent = window.map.offerDetails.HouseTypesTranslation[offerObject.offer.type];
     newOfferCard.querySelector('.popup__text--capacity').textContent = 'Для ' + offerObject.offer.guests + ' гостей в ' + offerObject.offer.rooms + ' комнатах';
     newOfferCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerObject.offer.checkin + ', выезд до ' + offerObject.offer.checkout;
 

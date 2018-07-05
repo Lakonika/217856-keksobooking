@@ -1,14 +1,10 @@
 'use strict';
+
 (function () {
   var SIMILAR_OFFERS_NUMBER = 5;
-  var OFFER_DETAILS = {
-    HOUSE_TYPE: [
-      'flat',
-      'house',
-      'bungalo'
-    ],
 
-    houseTypesTranslation: {
+  var OFFER_DETAILS = {
+    HouseTypesTranslation: {
       flat: 'Квартира',
       house: 'Дом',
       bungalo: 'Бунгало',
@@ -18,14 +14,11 @@
 
   // Перевод карты в активное состояние, генерация пинов на карте
   var activateMap = function () {
-    var createdPins = window.common.mapElement.querySelectorAll('.map__pin');
     window.common.mapElement.classList.remove('map--faded');
-    if (createdPins.length === 1) {
-      window.backend.downloadData(function (loadedData) {
-        window.common.allPins = loadedData.slice(0, SIMILAR_OFFERS_NUMBER);
-        window.pin.createPins(window.common.allPins);
-      });
-    }
+    window.backend.downloadData(function (loadedData) {
+      window.common.allPins = loadedData.slice(0, SIMILAR_OFFERS_NUMBER);
+      window.pin.createPins(window.common.allPins);
+    });
   };
 
   // Перевод карты в неактивное состояние, удаление элементов на карте

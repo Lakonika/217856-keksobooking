@@ -12,6 +12,14 @@
     SERVER_ERROR: 500
   };
 
+  var Messages = {
+    PAGE_NOT_FOUND: 'Страница не найдена',
+    SERVER_ERROR: 'На сервере произошла ошибка',
+    DEFAULT_ERROR: 'Ошибка с неизвестным статусом: ',
+    CONNECTION_ERROR: 'Ошибка соединения',
+    TIMEOUT_ERROR: 'Запрос не успел выполниться за ',
+  };
+
   var setup = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.timeout = TIMEOUT;
@@ -23,22 +31,22 @@
           onLoad(xhr.response);
           break;
         case HTTPStatuses.PAGE_NOT_FOUND:
-          onError('Страница не найдена');
+          onError(Messages.PAGE_NOT_FOUND);
           break;
         case HTTPStatuses.SERVER_ERROR:
-          onError('На сервере произошла ошибка.');
+          onError(Messages.SERVER_ERROR);
           break;
         default:
-          onError('Ошибка с неизвестным статусом: ' + xhr.status);
+          onError(Messages.DEFAULT_ERROR + xhr.status);
       }
     });
 
     xhr.addEventListener('error', function () {
-      onError('Ошибка соединения');
+      onError(Messages.CONNECTION_ERROR);
     });
 
     xhr.addEventListener('timeout', function () {
-      onError('Запрос не успел выполниться за ' + xhr.timeout + ' мс.');
+      onError(Messages.TIMEOUT_ERROR + xhr.timeout + ' мс.');
     });
 
     return xhr;
