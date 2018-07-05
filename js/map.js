@@ -15,10 +15,12 @@
   // Перевод карты в активное состояние, генерация пинов на карте
   var activateMap = function () {
     window.common.mapElement.classList.remove('map--faded');
-    window.backend.downloadData(function (loadedData) {
-      window.common.allPins = loadedData.slice(0, SIMILAR_OFFERS_NUMBER);
-      window.pin.createPins(window.common.allPins);
-    });
+    if (!window.pin.pageActivated) {
+      window.backend.downloadData(function (loadedData) {
+        window.common.allPins = loadedData.slice(0, SIMILAR_OFFERS_NUMBER);
+        window.pin.createPins(window.common.allPins);
+      });
+    }
   };
 
   // Перевод карты в неактивное состояние, удаление элементов на карте

@@ -140,6 +140,8 @@
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
       window.common.mapElement.removeEventListener('mousemove', onMouseMove);
+      window.common.mapElement.removeEventListener('mouseup', onMouseUp);
+
       setAddress(getMainPinAddress());
     };
 
@@ -183,6 +185,7 @@
   });
 
   window.pin = {
+    pageActivated: pageActivated,
     mainPin: mainPin,
     activatePin: activatePin,
     createPins: createPins,

@@ -89,6 +89,7 @@
     window.pin.deletePins();
     window.common.filtredPins = setPacketsFilters();
     window.pin.createPins(window.common.filtredPins);
+    window.pin.pageActivated = true;
   });
 
   filtresForm.addEventListener('change', onFiltresFormChange);
