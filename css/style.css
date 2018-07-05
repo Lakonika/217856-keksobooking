@@ -1216,3 +1216,40 @@ fieldset {
       -ms-transform: translateX(-50%);
           transform: translateX(-50%);
 }
+.error {
+  position: absolute;
+  top: 750px;
+  left: 50%;
+  margin-left: -250px;
+  z-index: 10;
+  width: 500px;
+  height: 280px;
+  padding: 60px;
+  box-sizing: border-box;
+  text-align: center;
+  background-color: yellow;
+  font-size: 24px;
+  font-weight: bold;
+  color: red;
+}
+
+.error__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 60;
+  width: 40px;
+  height: 40px;
+  background-color: red;
+}
+
+.error__close::after {
+  display: block;
+  width: 30px;
+  height: 30px;
+  content: 'x';
+  position: absolute;
+  top: 0;
+  left: 5px;
+  color: yellow;
+}

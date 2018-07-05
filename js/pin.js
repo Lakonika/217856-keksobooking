@@ -38,7 +38,7 @@
 
   // Удаление класса выделенного элемента
   var deactivatePin = function () {
-    var activePins = window.commonElements.mapElement.querySelector('.map__pin--active');
+    var activePins = window.common.mapElement.querySelector('.map__pin--active');
     if (activePins) {
       activePins.classList.remove('map__pin--active');
     }
@@ -53,8 +53,8 @@
   var createPins = function (offersArr) {
 
     var pinsMap = document.createDocumentFragment();
-    for (var i = 0; i < offersArr.length - 1; i++) {
-      var newPinNode = window.commonElements.templateElement.querySelector('.map__pin').cloneNode(true);
+    for (var i = 0; i < offersArr.length; i++) {
+      var newPinNode = window.common.templateElement.querySelector('.map__pin').cloneNode(true);
       newPinNode.querySelector('img').src = offersArr[i].author.avatar;
       newPinNode.style.top = (offersArr[i].location.y - pinSize.WIDTH / 2) + 'px';
       newPinNode.style.left = (offersArr[i].location.x - pinSize.HEIGHT / 2) + 'px';
@@ -63,7 +63,7 @@
 
       newPinNode.addEventListener('click', onPinClick.bind(undefined, offersArr[i]));
       newPinNode.addEventListener('click', deactivatePin);
-      newPinNode.addEventListener('click', window.activatePin);
+      newPinNode.addEventListener('click', activatePin);
     }
     mapPins.appendChild(pinsMap);
   };
@@ -79,8 +79,10 @@
 
   // Получение адреса метки mainPin на карте
   var getMainPinAddress = function () {
-    var addressX = Math.round(mainPin.offsetLeft + (pageActivated ? MainPinOptions.on.WIDTH / 2 : MainPinOptions.off.WIDTH / 2));
-    var addressY = Math.round(mainPin.offsetTop + (pageActivated ? MainPinOptions.on.HEIGHT / 2 : MainPinOptions.off.HEIGHT / 2));
+    var addressX = Math.round(mainPin.offsetLeft + (pageActivated ?
+      MainPinOptions.on.WIDTH / 2 : MainPinOptions.off.WIDTH / 2));
+    var addressY = Math.round(mainPin.offsetTop + (pageActivated ?
+      MainPinOptions.on.HEIGHT / 2 : MainPinOptions.off.HEIGHT / 2));
     var coord = {
       x: addressX,
       y: addressY
@@ -111,7 +113,7 @@
       };
 
       var maxCoords = {
-        x: window.commonElements.mapElement.clientWidth - mainPin.clientWidth / 2,
+        x: window.common.mapElement.clientWidth - mainPin.clientWidth / 2,
         y: MainPinOptions.moveLimits.MAX - MainPinOptions.on.HEIGHT
       };
 
@@ -134,29 +136,50 @@
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      document.removeEventListener('mousemove', onMouseMove);
+      window.common.mapElement.removeEventListener('mousemove', onMouseMove);
       setAddress(getMainPinAddress());
     };
 
-    document.addEventListener('mouseup', onMouseUp);
-    document.addEventListener('mousemove', onMouseMove);
+    window.common.mapElement.addEventListener('mouseup', onMouseUp);
+    window.common.mapElement.addEventListener('mousemove', onMouseMove);
   };
 
   var initPin = function () {
-    document.addEventListener('mousedown', mainPinHandler);
+    window.common.mapElement.addEventListener('mousedown', mainPinHandler);
+    setAddress(getMainPinAddress());
+    mainPin.removeEventListener('mousedown', mainPinHandler);
+  };
+
+  var deletePins = function () {
+    var allPinsList = mapPins.querySelectorAll('.map__pin');
+
+    for (var i = 0; i < allPinsList.length; i++) {
+      if (allPinsList[i].classList.contains('map__pin--main')) {
+        continue;
+      }
+      mapPins.removeChild(allPinsList[i]);
+    }
+    moveMainPin(MainPinOptions.start.LEFT, MainPinOptions.start.TOP);
+    mainPin.addEventListener('mousedown', initPin);
+    mainPin.addEventListener('mouseup', initPage);
+  };
+
+  var initPage = function () {
     window.map.activateMap();
     window.form.activateForm();
-    setAddress(getMainPinAddress());
-    mainPin.removeEventListener('mousedown', initPin);
+    mainPin.removeEventListener('mouseup', initPage);
   };
 
   mainPin.addEventListener('mousedown', initPin);
+  mainPin.addEventListener('mouseup', initPage);
 
   window.pin = {
+    mainPin: mainPin,
     activatePin: activatePin,
     createPins: createPins,
     getMainPinAddress: getMainPinAddress,
     mainPinHandler: mainPinHandler,
+    deletePins: deletePins
   };
 
 })();
