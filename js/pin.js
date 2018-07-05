@@ -90,7 +90,7 @@
     return coord;
   };
 
-  var mainPinHandler = function (evt) {
+  var onMainPinClick = function (evt) {
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
@@ -145,9 +145,9 @@
   };
 
   var initPin = function () {
-    window.common.mapElement.addEventListener('mousedown', mainPinHandler);
+    window.common.mapElement.addEventListener('mousedown', onMainPinClick);
     setAddress(getMainPinAddress());
-    mainPin.removeEventListener('mousedown', mainPinHandler);
+    mainPin.removeEventListener('mousedown', onMainPinClick);
   };
 
   var deletePins = function () {
@@ -178,7 +178,7 @@
     activatePin: activatePin,
     createPins: createPins,
     getMainPinAddress: getMainPinAddress,
-    mainPinHandler: mainPinHandler,
+    onMainPinClick: onMainPinClick,
     deletePins: deletePins
   };
 

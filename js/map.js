@@ -17,11 +17,14 @@
 
   // Перевод карты в активное состояние, генерация пинов на карте
   var activateMap = function () {
+    var createdPins = window.common.mapElement.querySelectorAll('.map__pin');
     window.common.mapElement.classList.remove('map--faded');
-    window.backend.downloadData(function (loadedData) {
-      window.common.allPins = loadedData;
-      window.pin.createPins(window.common.allPins);
-    });
+    if (createdPins.length === 1) {
+      window.backend.downloadData(function (loadedData) {
+        window.common.allPins = loadedData;
+        window.pin.createPins(window.common.allPins);
+      });
+    }
   };
 
   // Перевод карты в неактивное состояние, удаление элементов на карте
