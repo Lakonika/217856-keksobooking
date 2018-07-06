@@ -61,6 +61,7 @@
       return item.value;
     });
 
+    return window.common.allPins.filter(function (item) {
       if (!compareValues(housingTypeField.value, item.offer.type)) {
         return false;
       }
