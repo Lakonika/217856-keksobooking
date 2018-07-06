@@ -162,8 +162,7 @@
   };
 
   // Обработчик события по кнопке отправки формы
-  var onSendClick = function (evt) {
-    evt.preventDefault();
+  var onSendClick = function () {
     if (adTitleField.validity.valid && adPriceField.validity.valid) {
       var data = new FormData(adForm);
       window.backend.uploadData(data, formSuccessMessage, formErrorMessage);
@@ -172,8 +171,7 @@
     }
   };
 
-  var onFormReset = function (evt) {
-    evt.preventDefault();
+  var onFormReset = function () {
     window.pin.deletePins();
     window.card.dropActiveCard();
     window.filters.resetFilters();
