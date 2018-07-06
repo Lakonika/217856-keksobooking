@@ -2,6 +2,7 @@
 
 (function () {
   var ANY = 'any';
+  var SIMILAR_OFFERS_NUMBER = 5;
 
   var PriceTypes = {
     MIDDLE: 'middle',
@@ -54,30 +55,29 @@
 
   var setPacketsFilters = function () {
     var featuresArr = Array.from(featuresList);
-    var selectedfeatures = featuresArr.filter(function (it) {
-      return it.checked;
-    }).map(function (it) {
-      return it.value;
+    var selectedfeatures = featuresArr.filter(function (item) {
+      return item.checked;
+    }).map(function (item) {
+      return item.value;
     });
 
-    return window.common.allPins.filter(function (it) {
-      if (!compareValues(housingTypeField.value, it.offer.type)) {
+      if (!compareValues(housingTypeField.value, item.offer.type)) {
         return false;
       }
 
-      if (!compareValues(housingRoomsField.value, it.offer.rooms.toString())) {
+      if (!compareValues(housingRoomsField.value, item.offer.rooms.toString())) {
         return false;
       }
 
-      if (!compareValues(housingGuestsField.value, it.offer.guests.toString())) {
+      if (!compareValues(housingGuestsField.value, item.offer.guests.toString())) {
         return false;
       }
 
-      if (!compareByPrice(it.offer.price)) {
+      if (!compareByPrice(item.offer.price)) {
         return false;
       }
 
-      if (!compareFeatures(selectedfeatures, it.offer.features)) {
+      if (!compareFeatures(selectedfeatures, item.offer.features)) {
         return false;
       }
 
