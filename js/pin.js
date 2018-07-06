@@ -168,6 +168,7 @@
 
   var returnMainPin = function () {
     moveMainPin(MainPinOptions.start.LEFT, MainPinOptions.start.TOP);
+    setAddress(getMainPinAddress());
   };
 
   var onPageInitiate = function () {

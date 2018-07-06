@@ -32,6 +32,7 @@
 
   var adForm = document.querySelector('.ad-form');
   var sendForm = adForm.querySelector('.ad-form__submit');
+  var resetForm = adForm.querySelector('.ad-form__reset');
   var checkInField = adForm.querySelector('#timein');
   var checkOutField = adForm.querySelector('#timeout');
   var roomsField = adForm.querySelector('#room_number');
@@ -42,6 +43,7 @@
   var adTitleField = adForm.querySelector('#title');
   var adPriceField = adForm.querySelector('#price');
   var success = document.querySelector('.success');
+
 
   // Проверка введенных пользователем данных в поле цены
   var onPriceValueCheck = function () {
@@ -170,6 +172,14 @@
     }
   };
 
+  var onFormReset = function (evt) {
+    evt.preventDefault();
+    window.pin.deletePins();
+    window.card.dropActiveCard();
+    window.filters.resetFilters();
+    window.pin.returnMainPin();
+  };
+
   // Обработчик события по кнопке закрытия попапа
   success.addEventListener('click', function () {
     closeSuccess();
@@ -182,6 +192,8 @@
   });
 
   sendForm.addEventListener('click', onSendClick);
+
+  resetForm.addEventListener('click', onFormReset);
 
   window.form = {
     activateForm: activateForm,
