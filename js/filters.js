@@ -14,13 +14,13 @@
     MAX: '50000'
   };
 
-  var filtresForm = document.querySelector('.map__filters');
-  var housingTypeField = filtresForm.querySelector('#housing-type');
-  var housingPriceField = filtresForm.querySelector('#housing-price');
-  var housingRoomsField = filtresForm.querySelector('#housing-rooms');
-  var housingGuestsField = filtresForm.querySelector('#housing-guests');
+  var filtersForm = document.querySelector('.map__filters');
+  var housingTypeField = filtersForm.querySelector('#housing-type');
+  var housingPriceField = filtersForm.querySelector('#housing-price');
+  var housingRoomsField = filtersForm.querySelector('#housing-rooms');
+  var housingGuestsField = filtersForm.querySelector('#housing-guests');
 
-  var feauturesList = filtresForm.querySelectorAll('input[name="features"]');
+  var feauturesList = filtersForm.querySelectorAll('input[name="features"]');
 
   var compareValues = function (filterValue, compareValue) {
     return filterValue === ANY || compareValue === filterValue;
@@ -84,7 +84,7 @@
     });
   };
 
-  var onFiltresFormChange = window.utils.debounce(function () {
+  var onfiltersFormChange = window.utils.debounce(function () {
     window.card.dropActiveCard();
     window.pin.deletePins();
     window.common.filtredPins = setPacketsFilters();
@@ -92,5 +92,5 @@
     window.pin.pageActivated = true;
   });
 
-  filtresForm.addEventListener('change', onFiltresFormChange);
+  filtersForm.addEventListener('change', onfiltersFormChange);
 })();
