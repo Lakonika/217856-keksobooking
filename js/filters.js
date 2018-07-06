@@ -88,8 +88,8 @@
   var onfiltersFormChange = window.utils.debounce(function () {
     window.card.dropActiveCard();
     window.pin.deletePins();
-    window.common.filtredPins = setPacketsFilters();
-    window.pin.createPins(window.common.filtredPins);
+    window.common.filteredPins = setPacketsFilters();
+    window.pin.createPins(window.common.filteredPins);
     window.pin.pageActivated = true;
   });
 
