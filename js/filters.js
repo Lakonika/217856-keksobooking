@@ -20,7 +20,7 @@
   var housingRoomsField = filtersForm.querySelector('#housing-rooms');
   var housingGuestsField = filtersForm.querySelector('#housing-guests');
 
-  var feauturesList = filtersForm.querySelectorAll('input[name="features"]');
+  var featuresList = filtersForm.querySelectorAll('input[name="features"]');
 
   var compareValues = function (filterValue, compareValue) {
     return filterValue === ANY || compareValue === filterValue;
@@ -52,8 +52,8 @@
   };
 
   var setPacketsFilters = function () {
-    var feauturesArr = Array.from(feauturesList);
-    var selectedFeautures = feauturesArr.filter(function (it) {
+    var featuresArr = Array.from(featuresList);
+    var selectedfeatures = featuresArr.filter(function (it) {
       return it.checked;
     }).map(function (it) {
       return it.value;
@@ -76,7 +76,7 @@
         return false;
       }
 
-      if (!compareFeatures(selectedFeautures, it.offer.features)) {
+      if (!compareFeatures(selectedfeatures, it.offer.features)) {
         return false;
       }
 
