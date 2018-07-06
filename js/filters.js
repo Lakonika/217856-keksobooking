@@ -2,7 +2,6 @@
 
 (function () {
   var ANY = 'any';
-  var SIMILAR_OFFERS_NUMBER = 5;
 
   var PriceTypes = {
     MIDDLE: 'middle',
