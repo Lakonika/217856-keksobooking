@@ -18,8 +18,9 @@
     window.filters.enableFilters();
     if (!window.pin.pageActivated) {
       window.backend.downloadData(function (loadedData) {
-        window.common.allPins = loadedData.slice(0, SIMILAR_OFFERS_NUMBER);
-        window.pin.createPins(window.common.allPins);
+        window.common.allPins = loadedData;
+        var slicedPins = loadedData.slice(0, SIMILAR_OFFERS_NUMBER);
+        window.pin.createPins(slicedPins);
       });
     }
   };
