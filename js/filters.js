@@ -89,7 +89,7 @@
     window.card.dropActiveCard();
     window.pin.deletePins();
     window.common.filteredPins = setPacketsFilters();
-    window.pin.createPins(window.common.filteredPins);
+    window.pin.createPins(window.common.filteredPins.slice(0, window.common.SIMILAR_OFFERS_NUMBER));
     window.pin.pageActivated = true;
   });
 

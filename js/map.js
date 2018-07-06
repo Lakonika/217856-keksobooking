@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var SIMILAR_OFFERS_NUMBER = 5;
-
   var OFFER_DETAILS = {
     HouseTypesTranslation: {
       flat: 'Квартира',
@@ -19,7 +17,7 @@
     if (!window.pin.pageActivated) {
       window.backend.downloadData(function (loadedData) {
         window.common.allPins = loadedData;
-        var slicedPins = loadedData.slice(0, SIMILAR_OFFERS_NUMBER);
+        var slicedPins = loadedData.slice(0, window.common.SIMILAR_OFFERS_NUMBER);
         window.pin.createPins(slicedPins);
       });
     }
