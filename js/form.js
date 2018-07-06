@@ -130,6 +130,7 @@
   var activateForm = function () {
     adForm.classList.remove('ad-form--disabled');
     enableFieldsets();
+    window.filters.onfiltersFormChange();
   };
 
   var disableFieldsets = function () {
@@ -166,6 +167,7 @@
       window.backend.uploadData(data, formSuccessMessage, formErrorMessage);
       deactivateForm();
       window.map.deactivateMap();
+      window.filters.deactivateFilters();
     }
   };
 

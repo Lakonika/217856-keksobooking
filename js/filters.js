@@ -15,6 +15,7 @@
   };
 
   var filtersForm = document.querySelector('.map__filters');
+  var filtersFields = filtersForm.querySelectorAll('select');
   var housingTypeField = filtersForm.querySelector('#housing-type');
   var housingPriceField = filtersForm.querySelector('#housing-price');
   var housingRoomsField = filtersForm.querySelector('#housing-rooms');
@@ -92,5 +93,16 @@
     window.pin.pageActivated = true;
   });
 
+  var deactivateFilters = function () {
+    filtersFields.forEach(function (item) {
+      item.value = ANY;
+    });
+  };
+
   filtersForm.addEventListener('change', onfiltersFormChange);
+
+  window.filters = {
+    deactivateFilters: deactivateFilters,
+    onfiltersFormChange: onfiltersFormChange
+  };
 })();
