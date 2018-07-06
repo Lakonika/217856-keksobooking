@@ -175,6 +175,8 @@
     window.pin.deletePins();
     window.card.dropActiveCard();
     window.filters.resetFilters();
+    deactivateForm();
+    window.map.deactivateMap();
     window.pin.returnMainPin();
   };
 
