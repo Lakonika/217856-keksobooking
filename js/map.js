@@ -1,13 +1,8 @@
 'use strict';
+
 (function () {
   var OFFER_DETAILS = {
-    HOUSE_TYPE: [
-      'flat',
-      'house',
-      'bungalo'
-    ],
-
-    houseTypesTranslation: {
+    HouseTypesTranslation: {
       flat: 'Квартира',
       house: 'Дом',
       bungalo: 'Бунгало',
@@ -18,17 +13,24 @@
   // Перевод карты в активное состояние, генерация пинов на карте
   var activateMap = function () {
     window.common.mapElement.classList.remove('map--faded');
-    window.backend.downloadData(function (loadedData) {
-      window.common.allPins = loadedData;
-      window.pin.createPins(window.common.allPins);
-    });
+    window.filters.enableFilters();
+    if (!window.pin.pageActivated) {
+      window.backend.downloadData(function (loadedData) {
+        window.common.allPins = loadedData;
+        var slicedPins = loadedData.slice(0, window.common.SIMILAR_OFFERS_NUMBER);
+        window.pin.createPins(slicedPins);
+      });
+    }
   };
 
   // Перевод карты в неактивное состояние, удаление элементов на карте
   var deactivateMap = function () {
     window.common.mapElement.classList.add('map--faded');
     window.pin.deletePins();
+    window.pin.returnMainPin();
     window.card.dropActiveCard();
+    window.filters.resetFilters();
+    window.filters.disableFilters();
   };
 
   window.map = {

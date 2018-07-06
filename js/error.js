@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var createPopup = function (text) {
+  var showMessage = function (text) {
     var errorMessage = document.createElement('div');
     var closeButton = document.createElement('button');
     errorMessage.classList.add('error');
@@ -16,6 +16,6 @@
   };
 
   window.error = {
-    createPopup: createPopup
+    showMessage: showMessage
   };
 })();

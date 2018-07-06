@@ -628,7 +628,12 @@ fieldset {
   border-color: #ffaa99;
 }
 
-.ad-form__element input:focus,
+.ad-form__element input:focus {
+  outline: none;
+  -webkit-box-shadow: 0 0 4px 4px red;
+          box-shadow: 0 0 4px 4px red;
+}
+
 .ad-form__element select:focus,
 .ad-form__element textarea:focus {
   outline: none;
