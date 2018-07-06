@@ -167,7 +167,6 @@
       window.backend.uploadData(data, formSuccessMessage, formErrorMessage);
       deactivateForm();
       window.map.deactivateMap();
-      window.filters.deactivateFilters();
     }
   };
 

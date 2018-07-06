@@ -15,6 +15,7 @@
   // Перевод карты в активное состояние, генерация пинов на карте
   var activateMap = function () {
     window.common.mapElement.classList.remove('map--faded');
+    window.filters.enableFilters();
     if (!window.pin.pageActivated) {
       window.backend.downloadData(function (loadedData) {
         window.common.allPins = loadedData.slice(0, SIMILAR_OFFERS_NUMBER);
@@ -29,6 +30,8 @@
     window.pin.deletePins();
     window.pin.returnMainPin();
     window.card.dropActiveCard();
+    window.filters.resetFilters();
+    window.filters.disableFilters();
   };
 
   window.map = {

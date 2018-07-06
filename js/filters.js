@@ -93,7 +93,7 @@
     window.pin.pageActivated = true;
   });
 
-  var deactivateFilters = function () {
+  var resetFilters = function () {
     filtersFields.forEach(function (item) {
       item.value = ANY;
     });
@@ -102,10 +102,26 @@
     });
   };
 
+  var disableFilters = function () {
+    Array.from(filtersForm.elements).forEach(function (item) {
+      item.disabled = true;
+    });
+    filtersForm.removeEventListener('change', onfiltersFormChange);
+  };
+
+  var enableFilters = function () {
+    Array.from(filtersForm.elements).forEach(function (item) {
+      item.disabled = false;
+    });
+    filtersForm.addEventListener('change', onfiltersFormChange);
+  };
+
   filtersForm.addEventListener('change', onfiltersFormChange);
 
   window.filters = {
-    deactivateFilters: deactivateFilters,
+    resetFilters: resetFilters,
+    disableFilters: disableFilters,
+    enableFilters: enableFilters,
     onfiltersFormChange: onfiltersFormChange
   };
 })();
