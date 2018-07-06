@@ -97,6 +97,9 @@
     filtersFields.forEach(function (item) {
       item.value = ANY;
     });
+    featuresList.forEach(function (item) {
+      item.checked = false;
+    });
   };
 
   filtersForm.addEventListener('change', onfiltersFormChange);
