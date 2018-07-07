@@ -132,7 +132,7 @@
   var activateForm = function () {
     adForm.classList.remove('ad-form--disabled');
     enableFieldsets();
-    window.filters.onfiltersFormChange();
+    window.filters.onFiltersFormChange();
   };
 
   var disableFieldsets = function () {

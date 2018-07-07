@@ -85,7 +85,7 @@
     });
   };
 
-  var onfiltersFormChange = window.utils.debounce(function () {
+  var onFiltersFormChange = window.utils.debounce(function () {
     window.card.dropActiveCard();
     window.pin.deletePins();
     window.common.filteredPins = setPacketsFilters();
@@ -106,22 +106,22 @@
     Array.from(filtersForm.elements).forEach(function (item) {
       item.disabled = true;
     });
-    filtersForm.removeEventListener('change', onfiltersFormChange);
+    filtersForm.removeEventListener('change', onFiltersFormChange);
   };
 
   var enableFilters = function () {
     Array.from(filtersForm.elements).forEach(function (item) {
       item.disabled = false;
     });
-    filtersForm.addEventListener('change', onfiltersFormChange);
+    filtersForm.addEventListener('change', onFiltersFormChange);
   };
 
-  filtersForm.addEventListener('change', onfiltersFormChange);
+  filtersForm.addEventListener('change', onFiltersFormChange);
 
   window.filters = {
     resetFilters: resetFilters,
     disableFilters: disableFilters,
     enableFilters: enableFilters,
-    onfiltersFormChange: onfiltersFormChange
+    onFiltersFormChange: onFiltersFormChange
   };
 })();

@@ -27,7 +27,7 @@
 
   var mapPins = document.querySelector('.map__pins');
   var mainPin = document.querySelector('.map__pin--main');
-  var inputAddress = document.querySelector('#address');
+  var addressField = document.querySelector('#address');
   var pageActivated = false;
 
   // Поставили обработчик события по pin
@@ -71,13 +71,13 @@
     mapPins.appendChild(pinsMap);
   };
 
-  var moveMainPin = function (x, y) {
-    mainPin.style.top = y + 'px';
-    mainPin.style.left = x + 'px';
+  var moveMainPin = function (left, top) {
+    mainPin.style.top = top + 'px';
+    mainPin.style.left = left + 'px';
   };
 
   var setAddress = function (address) {
-    inputAddress.value = address.x + ', ' + address.y;
+    addressField.value = address.x + ', ' + address.y;
   };
 
   // Получение адреса метки mainPin на карте
@@ -177,13 +177,11 @@
     mainPin.removeEventListener('mouseup', onPageInitiate);
   };
 
-  mainPin.addEventListener('mousedown', function () {
-    onPinInitiate();
-  });
+  mainPin.addEventListener('mousedown', onPinInitiate);
 
-  mainPin.addEventListener('mouseup', function () {
-    onPageInitiate();
-  });
+  mainPin.addEventListener('mouseup', onPageInitiate);
+
+  setAddress(getMainPinAddress());
 
   window.pin = {
     pageActivated: pageActivated,
@@ -194,6 +192,7 @@
     onMainPinClick: onMainPinClick,
     deletePins: deletePins,
     returnMainPin: returnMainPin,
+    setAddress: setAddress,
   };
 
 })();
