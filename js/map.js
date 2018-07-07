@@ -29,6 +29,7 @@
     window.pin.deletePins();
     window.pin.returnMainPin();
     window.card.dropActiveCard();
+    window.pin.mainPin.addEventListener('mouseup', window.pin.onPageInitiate);
     window.filters.resetFilters();
     window.filters.disableFilters();
   };

@@ -190,6 +190,7 @@
     deletePins: deletePins,
     returnMainPin: returnMainPin,
     setAddress: setAddress,
+    onPageInitiate: onPageInitiate
   };
 
 })();
