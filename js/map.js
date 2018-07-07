@@ -17,7 +17,7 @@
     if (!window.pin.pageActivated) {
       window.backend.downloadData(function (loadedData) {
         window.common.allPins = loadedData;
-        var slicedPins = loadedData.slice(0, window.common.SIMILAR_OFFERS_NUMBER);
+        var slicedPins = window.common.shuffle(loadedData).slice(0, window.common.SIMILAR_OFFERS_NUMBER);
         window.pin.createPins(slicedPins);
       });
     }
