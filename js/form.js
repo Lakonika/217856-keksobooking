@@ -157,7 +157,7 @@
     document.body.insertAdjacentElement('afterbegin', window.error.showMessage(errorMessage));
   };
 
-  var closeSuccess = function () {
+  var onSuccessClose = function () {
     success.classList.add('hidden');
   };
 
@@ -181,13 +181,11 @@
   };
 
   // Обработчик события по кнопке закрытия попапа
-  success.addEventListener('click', function () {
-    closeSuccess();
-  });
+  success.addEventListener('click', onSuccessClose);
 
   window.addEventListener('keydown', function (evt) {
     if (evt.key === window.utils.ESCAPE_KEY) {
-      closeSuccess();
+      onSuccessClose();
     }
   });
 

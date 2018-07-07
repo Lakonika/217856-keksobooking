@@ -52,20 +52,20 @@
   var createPins = function (offersArr) {
 
     var pinsMap = document.createDocumentFragment();
-    for (var i = 0; i < offersArr.length; i++) {
+    Array.from(offersArr).forEach(function (item) {
       var newPinNode = window.common.templateElement.querySelector('.map__pin').cloneNode(true);
-      newPinNode.querySelector('img').src = offersArr[i].author.avatar;
-      newPinNode.style.top = (offersArr[i].location.y - PinSize.WIDTH / 2) + 'px';
-      newPinNode.style.left = (offersArr[i].location.x - PinSize.HEIGHT / 2) + 'px';
+      newPinNode.querySelector('img').src = item.author.avatar;
+      newPinNode.style.top = (item.location.y - PinSize.WIDTH / 2) + 'px';
+      newPinNode.style.left = (item.location.x - PinSize.HEIGHT / 2) + 'px';
 
       pinsMap.appendChild(newPinNode);
 
-      newPinNode.addEventListener('click', onPinClick.bind(undefined, offersArr[i]));
+      newPinNode.addEventListener('click', onPinClick.bind(undefined, item));
       newPinNode.addEventListener('click', function (pin) {
         deactivatePin();
         activatePin(pin);
       });
-    }
+    });
     mapPins.appendChild(pinsMap);
   };
 
@@ -156,12 +156,11 @@
   var deletePins = function () {
     var allPinsList = mapPins.querySelectorAll('.map__pin');
 
-    for (var i = 0; i < allPinsList.length; i++) {
-      if (allPinsList[i].classList.contains('map__pin--main')) {
-        continue;
+    allPinsList.forEach(function (item) {
+      if (!item.classList.contains('map__pin--main')) {
+        mapPins.removeChild(item);
       }
-      mapPins.removeChild(allPinsList[i]);
-    }
+    });
   };
 
   var returnMainPin = function () {
