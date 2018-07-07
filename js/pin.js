@@ -61,10 +61,8 @@
       pinsMap.appendChild(newPinNode);
 
       newPinNode.addEventListener('click', onPinClick.bind(undefined, offersArr[i]));
-      newPinNode.addEventListener('click', function () {
-        deactivatePin();
-      });
       newPinNode.addEventListener('click', function (pin) {
+        deactivatePin();
         activatePin(pin);
       });
     }
