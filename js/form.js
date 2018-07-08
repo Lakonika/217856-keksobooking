@@ -197,5 +197,6 @@
   window.form = {
     activateForm: activateForm,
     adFieldset: adFieldset,
+    formErrorMessage: formErrorMessage
   };
 })();

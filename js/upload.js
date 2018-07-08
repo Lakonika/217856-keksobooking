@@ -49,6 +49,7 @@
     var fileRegExp = new RegExp('^image/(' + Object.keys(TYPES_OF_IMAGES).join('|').replace('\+', '\\+') + ')$', 'i');
 
     if (!fileRegExp.test(avatarFile.type)) {
+      window.form.formErrorMessage('Допустимые форматы файлов: jpg, png, svg, gif');
       return;
     }
 
@@ -85,6 +86,7 @@
     var fileRegExp = new RegExp('^image/(' + Object.keys(TYPES_OF_IMAGES).join('|').replace('\+', '\\+') + ')$', 'i');
 
     if (!fileRegExp.test(imageFile.type)) {
+      window.form.formErrorMessage('Допустимые форматы файлов: jpg, png, svg, gif');
       return;
     }
 
