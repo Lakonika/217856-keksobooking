@@ -94,17 +94,19 @@
   };
 
   var onChangeInputAvatar = function () {
-    for (var i = 0; i < this.files.length; i++) {
-      previewAvatarContainer.innerHTML = '';
-      showPreviewAvatar(this.files[i]);
-    }
+    previewAvatarContainer.innerHTML = '';
+    var newAvatar = uploadAvatarControl.files;
+    Array.from(newAvatar).forEach(function (element) {
+      showPreviewAvatar(element);
+    });
   };
 
   var onChangeInputFiles = function () {
-    for (var i = 0; i < this.files.length; i++) {
+    var newPhotoPreview = uploadImagesControl.files;
+    Array.from(newPhotoPreview).forEach(function (element) {
       deletePhotos();
-      showPreviewImage(this.files[i]);
-    }
+      showPreviewImage(element);
+    });
   };
 
   uploadAvatarControl.addEventListener('change', onChangeInputAvatar);
