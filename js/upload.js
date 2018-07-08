@@ -12,12 +12,12 @@
     'SVG': ''
   };
 
-  var avatarSize = {
+  var AVATAR_SIZE = {
     WIDTH: 44,
     HEIGHT: 44
   };
 
-  var imageSize = {
+  var IMAGE_SIZE = {
     WIDTH: 70,
     HEIGHT: 70
   };
@@ -27,22 +27,17 @@
   var photoContainer = document.querySelector('.ad-form__photo-container');
   var uploadImagesControl = document.querySelector('.ad-form__input');
 
-  var setDefaultAvatar = function () {
-    var setAvatar = document.createElement('img');
-    setAvatar.src = DEFAULT_AVATAR_SRC;
-    setAvatar.width = avatarSize.WIDTH;
-    setAvatar.height = avatarSize.HEIGHT;
-    setAvatar.alt = 'Аватар пользователя';
-    previewAvatarContainer.appendChild(setAvatar);
+  var setAvatar = function (avatarPath) {
+    var newAvatar = document.createElement('img');
+    newAvatar.src = avatarPath || DEFAULT_AVATAR_SRC;
+    newAvatar.width = AVATAR_SIZE.WIDTH;
+    newAvatar.height = AVATAR_SIZE.HEIGHT;
+    newAvatar.alt = 'Аватар пользователя';
+    previewAvatarContainer.appendChild(newAvatar);
   };
 
-  var createNewAvatar = function (evt) {
-    var uploadAvatar = document.createElement('img');
-    uploadAvatar.src = evt.target.result;
-    uploadAvatar.width = avatarSize.WIDTH;
-    uploadAvatar.height = avatarSize.HEIGHT;
-    uploadAvatar.alt = 'Аватар пользователя';
-    previewAvatarContainer.appendChild(uploadAvatar);
+  var onAvatarFileReader = function (evt) {
+    setAvatar(evt.target.result);
   };
 
   var showPreviewAvatar = function (avatarFile) {
@@ -54,7 +49,7 @@
     }
 
     var fileReader = new FileReader();
-    fileReader.addEventListener('load', createNewAvatar);
+    fileReader.addEventListener('load', onAvatarFileReader);
     fileReader.readAsDataURL(avatarFile);
   };
 
@@ -66,7 +61,7 @@
 
   var resetInputs = function () {
     previewAvatarContainer.innerHTML = '';
-    setDefaultAvatar();
+    setAvatar();
     deletePhotos();
   };
 
@@ -76,8 +71,8 @@
     photoContainer.appendChild(newContainer);
     var uploadImage = document.createElement('img');
     uploadImage.src = evt.target.result;
-    uploadImage.width = imageSize.WIDTH;
-    uploadImage.height = imageSize.HEIGHT;
+    uploadImage.width = IMAGE_SIZE.WIDTH;
+    uploadImage.height = IMAGE_SIZE.HEIGHT;
     uploadImage.alt = '';
     newContainer.appendChild(uploadImage);
   };

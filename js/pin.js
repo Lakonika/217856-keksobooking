@@ -154,12 +154,10 @@
   };
 
   var deletePins = function () {
-    var allPinsList = mapPins.querySelectorAll('.map__pin');
+    var allPinsList = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
 
     allPinsList.forEach(function (item) {
-      if (!item.classList.contains('map__pin--main')) {
-        mapPins.removeChild(item);
-      }
+      mapPins.removeChild(item);
     });
   };
 
