@@ -2,7 +2,7 @@
 
 (function () {
 
-  // var DEFAULT_AVATAR_SRC = 'img/muffin-grey.svg';
+  var DEFAULT_AVATAR_SRC = 'img/muffin-grey.svg';
 
   var TYPES_OF_IMAGES = {
     'GIF': '',
@@ -24,10 +24,19 @@
 
   var uploadAvatarControl = document.querySelector('.ad-form-header__input');
   var previewAvatarContainer = document.querySelector('.ad-form-header__preview');
+  var photoContainer = document.querySelector('.ad-form__photo-container');
   var uploadImagesControl = document.querySelector('.ad-form__input');
-  var previewImageContainer = document.querySelector('.ad-form__photo');
 
-  var displayAvatarViaFileRader = function (evt) {
+  var setDefaultAvatar = function () {
+    var setAvatar = document.createElement('img');
+    setAvatar.src = DEFAULT_AVATAR_SRC;
+    setAvatar.width = avatarSize.WIDTH;
+    setAvatar.height = avatarSize.HEIGHT;
+    setAvatar.alt = 'Аватар пользователя';
+    previewAvatarContainer.appendChild(setAvatar);
+  };
+
+  var createNewAvatar = function (evt) {
     var uploadAvatar = document.createElement('img');
     uploadAvatar.src = evt.target.result;
     uploadAvatar.width = avatarSize.WIDTH;
@@ -44,17 +53,32 @@
     }
 
     var fileReader = new FileReader();
-    fileReader.addEventListener('load', displayAvatarViaFileRader);
+    fileReader.addEventListener('load', createNewAvatar);
     fileReader.readAsDataURL(avatarFile);
   };
 
-  var displayImageViaFileRader = function (evt) {
+  var deletePhotos = function () {
+    photoContainer.querySelectorAll('.ad-form__photo').forEach(function (item) {
+      item.remove();
+    });
+  };
+
+  var resetInputs = function () {
+    previewAvatarContainer.innerHTML = '';
+    setDefaultAvatar();
+    deletePhotos();
+  };
+
+  var createImage = function (evt) {
+    var newContainer = document.createElement('div');
+    newContainer.classList.add('ad-form__photo');
+    photoContainer.appendChild(newContainer);
     var uploadImage = document.createElement('img');
+    uploadImage.src = evt.target.result;
     uploadImage.width = imageSize.WIDTH;
     uploadImage.height = imageSize.HEIGHT;
     uploadImage.alt = '';
-    previewImageContainer.appendChild(uploadImage);
-    uploadImage.src = evt.target.result;
+    newContainer.appendChild(uploadImage);
   };
 
   var showPreviewImage = function (imageFile) {
@@ -65,7 +89,7 @@
     }
 
     var fileReader = new FileReader();
-    fileReader.addEventListener('load', displayImageViaFileRader);
+    fileReader.addEventListener('load', createImage);
     fileReader.readAsDataURL(imageFile);
   };
 
@@ -78,11 +102,15 @@
 
   var onChangeInputFiles = function () {
     for (var i = 0; i < this.files.length; i++) {
-      previewImageContainer.innerHTML = '';
       showPreviewImage(this.files[i]);
     }
   };
 
   uploadAvatarControl.addEventListener('change', onChangeInputAvatar);
+  uploadImagesControl.addEventListener('change', deletePhotos);
   uploadImagesControl.addEventListener('change', onChangeInputFiles);
+
+  window.upload = {
+    resetInputs: resetInputs,
+  };
 })();

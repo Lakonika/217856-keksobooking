@@ -176,6 +176,7 @@
     window.card.dropActiveCard();
     window.filters.resetFilters();
     deactivateForm();
+    window.upload.resetInputs();
     window.map.deactivateMap();
     window.pin.returnMainPin();
   };
