@@ -39,7 +39,7 @@
   var capacityField = adForm.querySelector('#capacity');
   var typeField = adForm.querySelector('#type');
   var priceField = adForm.querySelector('#price');
-  var adFieldset = adForm.querySelectorAll('.ad-form__element');
+  var adFieldset = adForm.querySelectorAll('.ad-form > fieldset');
   var adTitleField = adForm.querySelector('#title');
   var adPriceField = adForm.querySelector('#price');
   var success = document.querySelector('.success');
@@ -132,7 +132,7 @@
   var activateForm = function () {
     adForm.classList.remove('ad-form--disabled');
     enableFieldsets();
-    window.filters.onfiltersFormChange();
+    window.filters.onFiltersFormChange();
   };
 
   var disableFieldsets = function () {
@@ -157,7 +157,7 @@
     document.body.insertAdjacentElement('afterbegin', window.error.showMessage(errorMessage));
   };
 
-  var closeSuccess = function () {
+  var onSuccessClose = function () {
     success.classList.add('hidden');
   };
 
@@ -176,18 +176,17 @@
     window.card.dropActiveCard();
     window.filters.resetFilters();
     deactivateForm();
+    window.upload.resetInputs();
     window.map.deactivateMap();
     window.pin.returnMainPin();
   };
 
   // Обработчик события по кнопке закрытия попапа
-  success.addEventListener('click', function () {
-    closeSuccess();
-  });
+  success.addEventListener('click', onSuccessClose);
 
   window.addEventListener('keydown', function (evt) {
     if (evt.key === window.utils.ESCAPE_KEY) {
-      closeSuccess();
+      onSuccessClose();
     }
   });
 
@@ -198,5 +197,6 @@
   window.form = {
     activateForm: activateForm,
     adFieldset: adFieldset,
+    formErrorMessage: formErrorMessage
   };
 })();

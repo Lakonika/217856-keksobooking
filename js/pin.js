@@ -27,7 +27,7 @@
 
   var mapPins = document.querySelector('.map__pins');
   var mainPin = document.querySelector('.map__pin--main');
-  var inputAddress = document.querySelector('#address');
+  var addressField = document.querySelector('#address');
   var pageActivated = false;
 
   // Поставили обработчик события по pin
@@ -52,32 +52,30 @@
   var createPins = function (offersArr) {
 
     var pinsMap = document.createDocumentFragment();
-    for (var i = 0; i < offersArr.length; i++) {
+    Array.from(offersArr).forEach(function (item) {
       var newPinNode = window.common.templateElement.querySelector('.map__pin').cloneNode(true);
-      newPinNode.querySelector('img').src = offersArr[i].author.avatar;
-      newPinNode.style.top = (offersArr[i].location.y - PinSize.WIDTH / 2) + 'px';
-      newPinNode.style.left = (offersArr[i].location.x - PinSize.HEIGHT / 2) + 'px';
+      newPinNode.querySelector('img').src = item.author.avatar;
+      newPinNode.style.top = (item.location.y - PinSize.WIDTH / 2) + 'px';
+      newPinNode.style.left = (item.location.x - PinSize.HEIGHT / 2) + 'px';
 
       pinsMap.appendChild(newPinNode);
 
-      newPinNode.addEventListener('click', onPinClick.bind(undefined, offersArr[i]));
-      newPinNode.addEventListener('click', function () {
-        deactivatePin();
-      });
+      newPinNode.addEventListener('click', onPinClick.bind(undefined, item));
       newPinNode.addEventListener('click', function (pin) {
+        deactivatePin();
         activatePin(pin);
       });
-    }
+    });
     mapPins.appendChild(pinsMap);
   };
 
-  var moveMainPin = function (x, y) {
-    mainPin.style.top = y + 'px';
-    mainPin.style.left = x + 'px';
+  var moveMainPin = function (left, top) {
+    mainPin.style.top = top + 'px';
+    mainPin.style.left = left + 'px';
   };
 
   var setAddress = function (address) {
-    inputAddress.value = address.x + ', ' + address.y;
+    addressField.value = address.x + ', ' + address.y;
   };
 
   // Получение адреса метки mainPin на карте
@@ -158,12 +156,11 @@
   var deletePins = function () {
     var allPinsList = mapPins.querySelectorAll('.map__pin');
 
-    for (var i = 0; i < allPinsList.length; i++) {
-      if (allPinsList[i].classList.contains('map__pin--main')) {
-        continue;
+    allPinsList.forEach(function (item) {
+      if (!item.classList.contains('map__pin--main')) {
+        mapPins.removeChild(item);
       }
-      mapPins.removeChild(allPinsList[i]);
-    }
+    });
   };
 
   var returnMainPin = function () {
@@ -177,13 +174,11 @@
     mainPin.removeEventListener('mouseup', onPageInitiate);
   };
 
-  mainPin.addEventListener('mousedown', function () {
-    onPinInitiate();
-  });
+  mainPin.addEventListener('mousedown', onPinInitiate);
 
-  mainPin.addEventListener('mouseup', function () {
-    onPageInitiate();
-  });
+  mainPin.addEventListener('mouseup', onPageInitiate);
+
+  setAddress(getMainPinAddress());
 
   window.pin = {
     pageActivated: pageActivated,
@@ -194,6 +189,8 @@
     onMainPinClick: onMainPinClick,
     deletePins: deletePins,
     returnMainPin: returnMainPin,
+    setAddress: setAddress,
+    onPageInitiate: onPageInitiate
   };
 
 })();
