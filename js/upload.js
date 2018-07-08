@@ -102,12 +102,12 @@
 
   var onChangeInputFiles = function () {
     for (var i = 0; i < this.files.length; i++) {
+      deletePhotos();
       showPreviewImage(this.files[i]);
     }
   };
 
   uploadAvatarControl.addEventListener('change', onChangeInputAvatar);
-  uploadImagesControl.addEventListener('change', deletePhotos);
   uploadImagesControl.addEventListener('change', onChangeInputFiles);
 
   window.upload = {
