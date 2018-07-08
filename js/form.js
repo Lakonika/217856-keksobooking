@@ -39,7 +39,7 @@
   var capacityField = adForm.querySelector('#capacity');
   var typeField = adForm.querySelector('#type');
   var priceField = adForm.querySelector('#price');
-  var adFieldset = adForm.querySelectorAll('.ad-form__element');
+  var adFieldset = adForm.querySelectorAll('.ad-form > fieldset');
   var adTitleField = adForm.querySelector('#title');
   var adPriceField = adForm.querySelector('#price');
   var success = document.querySelector('.success');
